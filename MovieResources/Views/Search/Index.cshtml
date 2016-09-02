@@ -1,0 +1,120 @@
+﻿@model MovieResources.Models.ClassifyViewModel
+
+@{
+    ViewBag.Title = "分类结果";
+    ViewBag.PageType = 2;
+    ViewBag.NavType = 2;
+}
+<style>
+    .div-movie-back {
+        height: 200px;
+        padding: 10px;
+    }
+</style>
+
+<div class="panel panel-body text-center no-padding">
+    <h4>总共找到 @Model.Count 部电影</h4>
+</div>
+
+<div class="panel panel-body">
+    @using (Html.BeginForm("Index", "Search", FormMethod.Get, new { @class = "form-inline", role = "form" }))
+    {
+        @Html.HiddenFor(m => m.Search)
+        @Html.DropDownList("genre", Model.listGenre, new { @class = "form-control", style = "margin-right:15px;" })
+        @Html.DropDownList("country", Model.listCountry, new { @class = "form-control", style = "margin-right:15px;" })
+        @Html.DropDownList("year", Model.listYear, new { @class = "form-control", style = "margin-right:15px;" })
+        <input type="submit" value="筛选" class="btn btn-primary" />
+    }
+</div>
+
+<div class="panel panel-default">
+    <div class="panel-body" style="padding:10px;">
+        @if (Model.listMovies.Count == 0)
+        {
+            <div class="text-center">没有找到关于 "@Model.Search" 的结果 (＃￣▽￣＃)</div>
+        }
+
+        @foreach (var item in Model.listMovies)
+        {
+            <div class="col-md-4 col-sm-6 col-xs-4 panel-float div-movie-back">
+                <div class="full-height" style="padding:5px; overflow:hidden; background-color:#F2F2F2;">
+                    <div class="full-height no-padding" style="height:170px; width:120px; float:left;">
+                        <a class="full-height" href="/Movie/Index?id=@item.Id" target="_self">
+                            <img src="~/Content/Movie/@item.Avatar" title="@item.Title" class="img-responsive full-height full-width" />
+                        </a>
+                    </div>
+                    <div class="hidden-xs" style="margin-left:125px;">
+                        <div>
+                            <a href="/Movie/Index?id=@item.Id" class="font-larger" target="_self">
+                                <strong title="@item.Title">@item.Title</strong>
+                            </a>
+                            <a href="http://movie.douban.com/subject/@item.DoubanID/" class="clr-doubangreen" title="跳转到豆瓣电影" target="_self">
+                                @item.Rating
+                            </a>
+                            <span class="label label-info font-small" style="padding:0px 3px;">@item.Year</span>
+                        </div>
+                        <div>
+                            <strong>导演</strong>
+                            @foreach (var celebitem in item.Directors.Take(4))
+                            {
+                                <span>@celebitem.Title</span>
+                            }
+                        </div>
+                        <div>
+                            <strong>类型</strong>
+                            <span>@item.Genres</span>
+                        </div>
+                        <div>
+                            <strong>编剧</strong>
+                            @foreach (var celebitem in item.Writers.Take(4))
+                            {
+                                <span>@celebitem.Title</span>
+                            }
+                        </div>
+                        <div>
+                            <strong>主演</strong>
+                            @foreach (var celebitem in item.Casts.Take(4))
+                            {
+                                <span>@celebitem.Title</span>
+                            }
+                        </div>
+                    </div>
+                    <div class="hidden-xs" style="position:absolute; right:11px; bottom:11px;">
+                        <div class="btn-group" role="group">
+                            @if (!item.IsPlan)
+                            {
+                                <a class="btn btn-mark-xs" title="想看" href="/Mark/Create?target=@item.Id&type=1&returnurl=@Request.Url"><span class="glyphicon glyphicon-time"></span></a>
+                            }
+                            else
+                            {
+                                <a class="btn btn-mark-xs-inverse" title="取消想看" href="/Mark/Cancel?target=@item.Id&type=1&returnurl=@Request.Url"><span class="glyphicon glyphicon-time"></span></a>
+                            }
+                            @if (!item.IsFinish)
+                            {
+                                <a class="btn btn-mark-xs" title="已看" href="/Mark/Create?target=@item.Id&type=2&returnurl=@Request.Url"><span class="glyphicon glyphicon-ok-circle"></span></a>
+                            }
+                            else
+                            {
+                                <a class="btn btn-mark-xs-inverse" title="取消已看" href="/Mark/Cancel?target=@item.Id&type=2&returnurl=@Request.Url"><span class="glyphicon glyphicon-ok-circle"></span></a>
+                            }
+                            @if (!item.IsFavor)
+                            {
+                                <a class="btn btn-mark-xs" title="喜欢" href="/Mark/Create?target=@item.Id&type=3&returnurl=@Request.Url"><span class="glyphicon glyphicon-heart-empty"></span></a>
+                            }
+                            else
+                            {
+                                <a class="btn btn-mark-xs-inverse" title="取消喜欢" href="/Mark/Cancel?target=@item.Id&type=3&returnurl=@Request.Url"><span class="glyphicon glyphicon-heart-empty"></span></a>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+    @if (Model.PagingCount > 1)
+    {
+        <div class="panel-footer">
+            @MovieResources.Helpers.Controls.PageTagList(Model.Page, Model.PagingSize, Model.PagingCount, ViewBag.CurrentUrl)
+        </div>
+    }
+</div>

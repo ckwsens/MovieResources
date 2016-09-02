@@ -1,0 +1,215 @@
+﻿@model MovieResources.Models.HomeViewModel
+@using System.Configuration;
+
+@{
+    Layout = "~/Views/Shared/_LayoutWide.cshtml";
+    ViewBag.Title = ConfigurationManager.AppSettings.Get("WebsiteSubTitle");
+    ViewBag.PageType = 1;
+    ViewBag.NavType = 1;
+}
+
+<style>
+    #index_back {
+        position: absolute;
+        z-index: -100;
+        overflow: hidden;
+        top: 0;
+        width: 100%;
+        height: 640px;
+        margin-top: 80px;
+    }
+
+        #index_back img {
+            text-align: center;
+            width: 100%;
+            min-height: 100%;
+        }
+
+    #display_back {
+        height: 640px;
+        padding-top: 90px;
+    }
+
+    #head_title {
+        font-family: 'Weston Free';
+        color: rgba(255,255,255,0.84);
+    }
+
+    @@media(max-width:1280px) {
+        #index_back {
+            height: 500px;
+        }
+
+        #display_back {
+            height: 500px;
+            padding-top: 20px;
+        }
+    }
+
+    @@media(max-width:960px) {
+        #index_back {
+            height: 440px;
+        }
+
+        #display_back {
+            height: 440px;
+            padding-top: 5px;
+        }
+    }
+
+    @@media(max-width:768px) {
+        #head_title {
+            color: rgba(0,0,0,0.64);
+        }
+    }
+
+    @@media(max-width:360px) {
+        .hidden-xxs {
+            visibility: hidden;
+        }
+    }
+</style>
+
+<div class="hidden-xs" id="index_back">
+    <img src="/Content/Discovery/@Model.Discovery.Image" title="@Model.Discovery.Movie.Title">
+    </div>
+
+    <div class="container" id="display_back">
+        <h1 class="text-center" id="head_title">@ConfigurationManager.AppSettings.Get("WebsiteName")</h1>
+        <form action="/Search" class="form-horizontal" id="searchForm" method="post" role="form">
+            <div class="input-group input-group-lg col-sm-8 col-sm-offset-2" style="margin-top:20px;">
+                <input type="search" class="form-control" placeholder="搜索 电影" style="border-radius:2px 0px 0px 2px; border:1px solid #10761A; box-shadow:0;" name="search">
+                <span class="input-group-btn">
+                    <a title="搜索" class="btn btn-primary" href="javascript:document.getElementById('searchForm').submit()" style="border-radius:0px 2px 2px 0px; border:1px solid #10761A;">
+                        <i class="fa fa-search"></i>
+                    </a>
+                </span>
+            </div>
+        </form>
+        <div class="col-sm-8 col-sm-offset-2" style="background:rgba(255, 255, 255, 0.75) !important; padding:10px; margin-top:20px;">
+            <div>
+                <a class="link-text" href="/Movie/Index?id=@Model.Discovery.Movie.Id" title="@Model.Discovery.Movie.Title" target="_self">
+                    <span class="font-large">@Model.Discovery.Movie.Title</span>
+                </a>
+                <span class="pull-right">
+                    评分:
+                    <a class="clr-doubangreen" title="跳转到豆瓣电影" href="https://movie.douban.com/subject/@Model.Discovery.Movie.DoubanID/">@Model.Discovery.Movie.Rating</a>
+                </span>
+            </div>
+            <div class="font-small" style="max-height:85px; overflow:hidden; text-overflow:ellipsis;">@Model.Discovery.Movie.Summary</div>
+            <div class="visible-xs text-overflow font-small">
+                导演：
+                @foreach (var celebitem in Model.Discovery.Movie.Directors.Take(4))
+            {
+                if (!string.IsNullOrEmpty(celebitem.Id))
+                {
+                        <a href="/Celeb/Index?id=@celebitem.Id" class="link-text" target="_self">@celebitem.Title</a>
+                    }
+                    else
+                    {
+                        <span>@celebitem.Title</span>
+                    }
+                }
+            </div>
+            <div class="visible-xs text-overflow font-small">
+                演员：
+                @foreach (var celebitem in Model.Discovery.Movie.Writers.Take(4))
+            {
+                if (!string.IsNullOrEmpty(celebitem.Id))
+                {
+                        <a href="/Celeb/Index?id=@celebitem.Id" class="link-text" target="_self">@celebitem.Title</a>
+                    }
+                    else
+                    {
+                        <span>@celebitem.Title</span>
+                    }
+                }
+            </div>
+            <div class="visible-xs text-overflow font-small">
+                类型：
+                @foreach (var celebitem in Model.Discovery.Movie.Casts.Take(4))
+            {
+                if (!string.IsNullOrEmpty(celebitem.Id))
+                {
+                        <a href="/Celeb/Index?id=@celebitem.Id" class="link-text" target="_self">@celebitem.Title</a>
+                    }
+                    else
+                    {
+                        <span>@celebitem.Title</span>
+                    }
+                }
+            </div>
+        </div>
+
+        <div class="col-sm-8 col-sm-offset-2 text-center hidden-xxs" style="margin-top:30px;">
+            @if (Model.Discovery.Movie.IsPlan)
+            {
+                <a class="link-glyph link-glyph-reverse" href="/Mark/Cancel?target=@Model.Discovery.Movie.Id&type=1&returnurl=@Request.Url" title="取消"><span class="glyphicon glyphicon-time"></span></a>
+            }
+            else
+            {
+                <a class="link-glyph link-glyph-default" href="/Mark/Create?target=@Model.Discovery.Movie.Id&type=1&returnurl=@Request.Url" title="想看"><span class="glyphicon glyphicon-time"></span></a>
+            }
+            @if (Model.Discovery.Movie.IsFinish)
+            {
+                <a class="link-glyph link-glyph-reverse" href="/Mark/Cancel?target=@Model.Discovery.Movie.Id&type=2&returnurl=@Request.Url" title="取消"><span class="glyphicon glyphicon-ok-circle"></span></a>
+            }
+            else
+            {
+                <a class="link-glyph link-glyph-default" href="/Mark/Create?target=@Model.Discovery.Movie.Id&type=2&returnurl=@Request.Url" title="看过"><span class="glyphicon glyphicon-ok-circle"></span></a>
+            }
+            @if (Model.Discovery.Movie.IsFavor)
+            {
+                <a class="link-glyph link-glyph-reverse" href="/Mark/Cancel?target=@Model.Discovery.Movie.Id&type=3&returnurl=@Request.Url" title="取消"><span class="glyphicon glyphicon-heart-empty"></span></a>
+            }
+            else
+            {
+                <a class="link-glyph link-glyph-default" href="/Mark/Create?target=@Model.Discovery.Movie.Id&type=3&returnurl=@Request.Url" title="喜欢"><span class="glyphicon glyphicon-heart-empty"></span></a>
+            }
+            @if (Model.Discovery.Offset == 6)
+            {
+                <a class="link-glyph link-glyph-disabled" title="上一页"><span class="glyphicon glyphicon-chevron-left"></span></a>
+            }
+            else
+            {
+                <a class="link-glyph link-glyph-default" href="/Home/Index?offset=@Model.Discovery.Pre" title="上一页"><span class="glyphicon glyphicon-chevron-left"></span></a>
+            }
+            @if (Model.Discovery.Offset == 0)
+            {
+                <a class="link-glyph link-glyph-disabled" title="下一页"><span class="glyphicon glyphicon-chevron-right"></span></a>
+            }
+            else
+            {
+                <a class="link-glyph link-glyph-default" href="/Home/Index?offset=@Model.Discovery.Post" title="下一页"><span class="glyphicon glyphicon-chevron-right"></span></a>
+            }
+        </div>
+
+    </div>
+
+    <div class="container no-padding" style="margin-bottom:15px;">
+        <div class="col-sm-6">
+            <div class="text-left font-large">最新</div>
+            <hr />
+            <ul class="list-link">
+                @foreach (var item in Model.News)
+            {
+                    <li>
+                        <a class="link-list-item" href="/Movie/Index?id=@item.Id" title="@item.Title" target="_self">@item.Title &nbsp;(<span style="display:inline-block;">@item.Year</span>)</a>
+                    </li>
+                }
+            </ul>
+        </div>
+        <div class="col-sm-6">
+            <div class="text-left font-large">热门</div>
+            <hr />
+            <ul class="list-link">
+
+                @foreach (var item in Model.Mosts)
+            {
+                    <li>
+                        <a class="link-list-item" href="/Movie/Index?id=@item.Id" title="@item.Title" target="_self">@item.Title &nbsp;(<span style="display:inline-block;">@item.Year</span>)</a>
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>

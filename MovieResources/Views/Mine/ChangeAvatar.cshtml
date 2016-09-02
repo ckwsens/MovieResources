@@ -1,0 +1,76 @@
+﻿@model MovieResources.Models.ChangeAvatarViewModel
+
+@{
+    Layout = "~/Views/Mine/_LayoutPage.cshtml";
+    ViewBag.Avatar = Model.Avatar;
+    ViewBag.Account = Model.Account;
+    ViewBag.Title = "更改头像 | 个人设置";
+}
+
+<div class="panel panel-body">
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="/Mine/ChangeAvatar">更改头像     </a></li>
+        <li class=""><a href="/Mine/ChangePassword">更改密码     </a></li>
+        <li class=""><a href="/Mine/ChangeCover">更改主页封面     </a></li>
+    </ul>
+    <div class="panel-body col-sm-7">
+        @using (Html.BeginForm("ChangeAvatar", "Mine", FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
+        {
+            <p>你的头像能帮你吸引其他人的注意</p>
+            <p class="text-muted">选择一张本地图片编辑后上传</p>
+            <p class="text-muted">建议图片分辨率：256x256，大小不超过1MB</p>
+            <hr />
+
+            <div>
+                <div>
+                    <label class="control-label">当前头像</label>
+                </div>
+                <img src="~/Content/User/Avatar/@Model.Avatar" class="img-thumbnail" title="@Model.Account" style="max-width:147px;min-width:64px; max-height:147px;" />
+            </div>
+
+            <hr />
+
+            <div>
+                <input type="file" name="file" class="form-control" placeholder="请选择图片" onchange="loadImageFile()" id="inputImg" />
+                @Html.ValidationMessageFor(model => model.Avatar, "", new { @class = "text-danger" })
+            </div>
+
+            <div style="padding-top:15px; padding-bottom:15px;">
+                <div>
+                    <label class="control-label">已选择的图片</label>
+                </div>
+                <img class="img-thumbnail" id="imgDisplay" style="max-width:147px;min-width:64px; max-height:147px;" />
+            </div>
+
+            <div class="full-width">
+                <input type="submit" value="确认更改头像" class="btn btn-primary" />
+            </div>
+        }
+    </div>
+</div>
+
+<script type="text/javascript">
+    var loadImageFile = (function () {
+        if (window.FileReader) {
+            var oPreviewImg = null, oFReader = new window.FileReader(),
+            rFilter = /^(?:image\/bmp|image\/cis\-cod|image\/gif|image\/ief|image\/jpeg|image\/jpeg|image\/jpeg|image\/pipeg|image\/png|image\/svg\+xml|image\/tiff|image\/x\-cmu\-raster|image\/x\-cmx|image\/x\-icon|image\/x\-portable\-anymap|image\/x\-portable\-bitmap|image\/x\-portable\-graymap|image\/x\-portable\-pixmap|image\/x\-rgb|image\/x\-xbitmap|image\/x\-xpixmap|image\/x\-xwindowdump)$/i;
+
+            oFReader.onload = function (oFREvent) {
+                var newPreview = document.getElementById("imgDisplay");
+                newPreview.setAttribute("src", oFREvent.target.result);
+            };
+            return function () {
+                var aFiles = document.getElementById("inputImg").files;
+                if (aFiles.length === 0) { return; }
+                if (!rFilter.test(aFiles[0].type)) { alert("You must select a valid image file!"); return; }
+                oFReader.readAsDataURL(aFiles[0]);
+            }
+        }
+        if (navigator.appName === "Microsoft Internet Explorer") {
+            return function () {
+                alert(document.getElementById("inputImg").value);
+                document.getElementById("imgDisplay").src = document.getElementById("inputImg").value;
+            }
+        }
+    })();
+</script>

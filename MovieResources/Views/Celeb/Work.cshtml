@@ -1,0 +1,29 @@
+﻿@model MovieResources.Models.CelebViewModel
+
+@{
+    ViewBag.Title = Model.Name + " 的作品";
+}
+
+<div class="panel panel-default no-border">
+    <div class="panel-heading font-x-large">
+        <strong><a href="/Celeb/Index?id=@Model.Id" class="link-text tipup" title=">去到 @Model.Name 的影人页" data-toggle="tooltip" data-placement="bottom">@Model.Name</a>&nbsp;&nbsp;的全部作品</strong>&nbsp;&nbsp;（@Model.Works.Count）
+    </div>
+    <div class="row panel-body">
+        <div class="col-sm-8">
+            @foreach (var item in Model.Works)
+            {
+                <div class="col-xs-1 full-height bg-gray div-movieitem">
+                    <a class="full-height" href="/Movie/Index?id=@item.Work.Id">
+                        <img src="~/Content/Movie/@item.Work.Avatar" title="@item.Work.Title" class="col-md-4 img-responsive full-height full-width no-padding" />
+                    </a>
+                    <div class="text-center font-x-small">
+                        @item.Work.Title
+                        <br />
+                        @item.Pro
+                    </div>
+                </div>
+            }
+        </div>
+
+    </div>
+</div>

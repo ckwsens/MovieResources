@@ -1,0 +1,53 @@
+﻿@model MovieResources.Models.ManageAlbumViewModel
+
+@{
+    ViewBag.Title = "删除 " + Model.Title;
+    Layout = "~/Areas/Manage/Views/Shared/_Layout.cshtml";
+    ViewBag.Page = 4;
+}
+
+<div class="panel panel-default">
+    <div class="panel-body">
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.Title)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Title)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Summary)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Summary)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.CreateTime)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.CreateTime)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.AlterTime)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.AlterTime)
+            </dd>
+        </dl>
+    </div>
+
+    <div class="panel-footer">
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+            <div class="form-actions no-color">
+                <input type="submit" value="确认删除" class="btn btn-primary btn-block" />
+            </div>
+        }
+    </div>
+</div>
+
+@Html.ActionLink(linkText: "返回列表", actionName: "Index", routeValues: null, htmlAttributes: new { @class = "link-text" })

@@ -1,0 +1,200 @@
+﻿@model MovieResources.Models.MineMovieViewModel
+
+@{
+    Layout = "~/Views/Mine/_LayoutPage.cshtml";
+    ViewBag.Avatar = Model.Avatar;
+    ViewBag.Account = Model.Account;
+    if (ViewBag.MovieType == 1)
+    {
+        ViewBag.Title = "我想看的电影(" + Model.PlanCount + ")";
+    }
+    else if (ViewBag.MovieType == 2)
+    {
+        ViewBag.Title = "我看过的电影(" + Model.FinishCount + ")";
+    }
+    else if (ViewBag.MovieType == 3)
+    {
+        ViewBag.Title = "我喜欢的电影(" + Model.FavorCount + ")";
+    }
+    else if (ViewBag.MovieType == 4)
+    {
+        ViewBag.Title = "我创建的电影(" + Model.CreateCount + ")";
+    }
+}
+
+<div class="panel panel-body">
+    <ul class="nav nav-tabs">
+        @if (ViewBag.MovieType == 1)
+        {
+            <li class="active"><a href="/Mine/MineMovie?type=1">想看的(@Model.PlanCount)     </a></li>
+        }
+        else
+        {
+            <li class=""><a href="/Mine/MineMovie?type=1">想看的(@Model.PlanCount)     </a></li>
+        }
+        @if (ViewBag.MovieType == 2)
+        {
+            <li class="active"><a href="/Mine/MineMovie?type=2">看过的(@Model.FinishCount)     </a></li>
+        }
+        else
+        {
+            <li class=""><a href="/Mine/MineMovie?type=2">看过的(@Model.FinishCount)     </a></li>
+        }
+        @if (ViewBag.MovieType == 3)
+        {
+            <li class="active"><a href="/Mine/MineMovie?type=3">喜欢的(@Model.FavorCount)     </a></li>
+        }
+        else
+        {
+            <li class=""><a href="/Mine/MineMovie?type=3">喜欢的(@Model.FavorCount)     </a></li>
+        }
+        @if (ViewBag.MovieType == 4)
+        {
+            <li class="active"><a href="/Mine/MineMovie?type=4">创建的(@Model.CreateCount)     </a></li>
+        }
+        else
+        {
+            <li class=""><a href="/Mine/MineMovie?type=4">创建的(@Model.CreateCount)     </a></li>
+        }
+    </ul>
+
+    @if (ViewBag.MovieType == 4)
+    {
+        <div style="margin-top:10px;">
+            <a class="btn btn-primary" href="/Movie/Create/" title="新建电影" target="_self">新建电影</a>
+        </div>
+    }
+    @if (Model.Moives.Count == 0)
+    {
+        if (ViewBag.MovieType == 1)
+        {
+            <div class="text-center" style="margin-top:15px;">没有想看的电影(＃￣▽￣＃)</div>
+        }
+        else if (ViewBag.MovieType == 2)
+        {
+            <div class="text-center" style="margin-top:15px;">没有看过的电影(＃￣▽￣＃)</div>
+        }
+        else if (ViewBag.MovieType == 3)
+        {
+            <div class="text-center" style="margin-top:15px;">没有喜欢的电影(＃￣▽￣＃)</div>
+        }
+        else
+        {
+            <div class="text-center" style="margin-top:15px;">你还没有创建过电影(＃￣▽￣＃)</div>
+        }
+    }
+    else
+    {
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>
+                        电影名
+                    </th>
+                    <th>
+                        年份
+                    </th>
+                    <th>
+                        导演
+                    </th>
+                    <th>
+                        类型
+                    </th>
+                    <th>
+                        评分
+                    </th>
+                    @if (ViewBag.MovieType == 4)
+                    {
+                        <th>
+                            审核状态
+                        </th>
+                        <th>
+                            审核备注
+                        </th>
+                    }
+                    <th>
+                        #
+                    </th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var item in Model.Moives)
+                {
+                    <tr>
+                        <td>
+                            @Html.RouteLink(linkText: @item.Title, routeName: "Default", routeValues: new { controller = "Movie", action = "Index", id = @item.Id }, htmlAttributes: new { @class = "link-text", target = "_self" })
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Year)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Directors)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Genres)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Rating)
+                        </td>
+                        @if (ViewBag.MovieType == 4)
+                    {
+                        if (item.Status == 2)
+                        {
+
+                                <td>
+                                    <label class="label label-success">已通过</label>
+                                </td>
+                            }
+                            else if (item.Status == 1)
+                            {
+                                <td>
+                                    <label class="label label-warning">未通过</label>
+                                </td>
+                            }
+                            else
+                            {
+                                <td>
+                                    <label class="label label-danger">待处理</label>
+                                </td>
+                            }
+                            <td>@item.Note</td>
+                        }
+                        <td>
+                            @if (ViewBag.MovieType == 1)
+                            {
+                                if (!item.IsFinish)
+                                {
+                                    <a class="btn btn-mark-xs" title="已看" href="/Mark/Create?target=@item.Id&type=2&returnurl=@Request.Url"><span class="fa fa-check-circle-o"></span></a>
+                                }
+                                <a class="btn btn-mark-xs" title="移除" href="/Mark/Cancel?target=@item.Id&type=@ViewBag.MovieType&returnurl=@Request.Url"><span class="fa fa-trash-o"></span></a>
+                            }
+                            @if (ViewBag.MovieType == 2)
+                            {
+                                if (!item.IsFavor)
+                                {
+                                    <a class="btn btn-mark-xs" title="喜欢" href="/Mark/Create?target=@item.Id&type=3&returnurl=@Request.Url"><span class="fa fa-heart-o"></span></a>
+                                }
+                                <a class="btn btn-mark-xs" title="移除" href="/Mark/Cancel?target=@item.Id&type=@ViewBag.MovieType&returnurl=@Request.Url"><span class="fa fa-trash-o"></span></a>
+                            }
+                            @if (ViewBag.MovieType == 3)
+                            {
+                                <a class="btn btn-mark-xs" title="移除" href="/Mark/Cancel?target=@item.Id&type=@ViewBag.MovieType&returnurl=@Request.Url"><span class="fa fa-trash-o"></span></a>
+                            }
+
+                            @if (ViewBag.MovieType == 4)
+                            {
+                                <a class="btn btn-mark-xs" title="修改" href="/Movie/Edit?id=@item.Id"><span class="fa fa-edit"></span></a>
+                                if (!string.IsNullOrEmpty(item.DoubanID))
+                                {
+                                    <a class="btn btn-mark-xs" title="更新" href="/Movie/Refresh?id=@item.Id"><span class="fa fa-refresh"></span></a>
+                                }
+                                <a class="btn btn-mark-xs" title="删除" href="/Movie/Delete?id=@item.Id&returnurl=@Request.Url"><span class="fa fa-trash-o"></span></a>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>

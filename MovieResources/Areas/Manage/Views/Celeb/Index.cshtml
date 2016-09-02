@@ -1,0 +1,85 @@
+﻿@model List<MovieResources.Models.ManageCelebViewModel>
+
+@{
+    ViewBag.Title = "所有影人";
+    Layout = "~/Areas/Manage/Views/Shared/_Layout.cshtml";
+    ViewBag.Page = 2;
+}
+<div class="panel panel-default">
+    <div class="panel-heading">
+        @using (Html.BeginForm("Index", "Celeb", FormMethod.Get, new { @class = "form-inline", role = "form" }))
+        {
+            <div class="input-group">
+                <span class="input-group-addon">
+                    <i class="fa fa-search"></i>
+                </span>
+                @Html.TextBox("search", null, new { @class = "form-control", role = "input", placeholder = "请输入关键字" })
+            </div>
+            @Html.ActionLink(linkText: "添加新影人", actionName: "Create", routeValues: new { Area = "Manage" }, htmlAttributes: new { @class = "btn btn-primary" })
+        }
+    </div>
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="/Manage/Celeb/Index/">所有     </a></li>
+        <li class=""><a href="/Manage/Celeb/IndexAudit/">用户上传     </a></li>
+    </ul>
+    <div class="panel-body">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>
+                        中文名
+                    </th>
+                    <th>
+                        性别
+                    </th>
+                    <th>
+                        出生日期
+                    </th>
+                    <th>
+                        出生地
+                    </th>
+                    <th>
+                        职业
+                    </th>
+                    <th>
+                        家庭成员
+                    </th>
+                    <th>
+                        #
+                    </th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.RouteLink(linkText: @item.Name, routeName: "Default", routeValues: new { controller = "Celeb", action = "Index", id = @item.Id }, htmlAttributes: new { @class = "link-text", target = "_self" })
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Gender)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Birthday)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.BornPlace)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Pro)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Family)
+                        </td>
+                        <td>
+                            <a class="btn btn-mark-xs" title="更新此电影" href="/Manage/Celeb/Refresh?id=@item.Id"><span class="fa fa-refresh"></span></a>
+                            <a class="btn btn-mark-xs" title="编辑此影人" href="/Manage/Celeb/Edit?id=@item.Id"><span class="fa fa-edit"></span></a>
+                            <a class="btn btn-mark-xs" title="删除此影人" href="/Manage/Celeb/Delete?id=@item.Id"><span class="fa fa-trash"></span></a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

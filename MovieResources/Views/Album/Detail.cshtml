@@ -1,0 +1,204 @@
+﻿@model MovieResources.Models.AlbumViewModel
+
+@{
+    ViewBag.Title = Model.Title;
+    ViewBag.PageType = 2;
+}
+
+<style>
+    #div-back {
+        height: 230px;
+        padding: 10px;
+        margin-bottom: 15px;
+        background-color: #E6E6E6;
+    }
+
+    #div-card {
+        padding: 8px;
+        overflow: hidden;
+        margin: 0px;
+    }
+
+    #div-image {
+        width: 115px;
+        height: 160px;
+        float: left;
+    }
+
+    #div-info {
+        height: 160px;
+        margin-left: 125px;
+    }
+</style>
+
+<div class="col-sm-8">
+    <b style="font-size:28px;">@Model.Title</b>
+    <div style="margin-top:5px;">
+        <span>
+            来自: <a href="/People/Index?id=@Model.UserId&returnurl=@Request.Url" class="link-text" target="_self" title="@Model.UserAccount 的主页">@Model.UserAccount</a>
+        </span>&nbsp;&nbsp;&nbsp;&nbsp;
+        <span>@Model.CreateTime 创建</span>&nbsp;&nbsp;&nbsp;&nbsp;
+        <span>@Model.AlterTime 更新</span>
+    </div>
+    <p style="margin-top:10px;">@Model.Summary</p>
+    <div style="margin-top:10px; margin-bottom:15px; ">
+
+        @if (Model.IsCreator)
+        {
+            <a class="link-text" href="/Album/Edit?id=@Model.Id&returnurl=@Request.Url" title="修改">&gt;修改</a>
+            <a class="link-text" href="/Album/Delete?id=@Model.Id&returnurl=@Request.Url" title="删除">&gt;删除</a>
+
+            <a class="btn btn-xs btn-primary pull-right" title="添加内容" data-toggle="modal" data-target="#modalAdd"><span class="fa fa-plus"></span>添加内容</a>
+        }
+        else
+        {
+            if (Model.HasFollow)
+            {
+                <a class="btn btn-xs btn-primary" href="/Mark/Cancel?target=@Model.Id&type=7&returnurl=@Request.Url" title="取消关注"><span class="fa fa-star-o"></span>取消关注</a>
+            }
+            else
+            {
+                <a class="btn btn-xs btn-primary" href="/Mark/Create?target=@Model.Id&type=7&returnurl=@Request.Url" title="关注"><span class="fa fa-star-o"></span>关注</a>
+            }
+        }
+    </div>
+
+    <hr />
+
+    @if (Model.Items.Count == 0)
+    {
+        <div class="text-center">这个专辑还没有内容(＃￣▽￣＃)</div>
+    }
+
+    @foreach (var item in Model.Items)
+    {
+        <div id="div-back">
+            <div class="panel panel-default" id="div-card">
+                <div id="div-image">
+                    <a class="full-height" href="/Movie/Index?id=@item.MovieInfo.Id">
+                        <img src="~/Content/Movie/@item.MovieInfo.Avatar" title="@item.MovieInfo.Title" class="img-responsive full-height full-width" />
+                    </a>
+                </div>
+                <div id="div-info">
+                    <div>
+                        <a href="/Movie/Index?id=@item.MovieInfo.Id" target="_self">
+                            <strong title="@item.MovieInfo.Title">@item.MovieInfo.Title</strong>
+                        </a>
+                        <a href="http://movie.douban.com/subject/@item.MovieInfo.DoubanID/" class="clr-doubangreen" title="跳转到豆瓣电影" target="_self">
+                            @item.MovieInfo.Rating
+                        </a>
+                        <span class="label label-info font-small" style="padding:0px 3px;">@item.MovieInfo.Year</span>
+                    </div>
+                    <div class="text-overflow">
+                        <strong>导演</strong>
+                        @foreach (var celebitem in item.MovieInfo.Directors.Take(4))
+                        {
+                            if (!string.IsNullOrEmpty(celebitem.Id))
+                            {
+                                <a href="/Celeb/Index?id=@celebitem.Id" class="link-text" target="_self">@celebitem.Title</a>
+                            }
+                            else
+                            {
+                                <span>@celebitem.Title</span>
+                            }
+                        }
+                    </div>
+                    <div class="text-overflow">
+                        <strong>类型</strong>
+                        <span>@item.MovieInfo.Genres</span>
+                    </div>
+                    <div class="text-overflow">
+                        <strong>编剧</strong>
+                        @foreach (var celebitem in item.MovieInfo.Writers.Take(4))
+                        {
+                            if (!string.IsNullOrEmpty(celebitem.Id))
+                            {
+                                <a href="/Celeb/Index?id=@celebitem.Id" class="link-text" target="_self">@celebitem.Title</a>
+                            }
+                            else
+                            {
+                                <span>@celebitem.Title</span>
+                            }
+                        }
+                    </div>
+                    <div class="text-overflow">
+                        <strong>主演</strong>
+                        @foreach (var celebitem in item.MovieInfo.Casts.Take(4))
+                        {
+                            if (!string.IsNullOrEmpty(celebitem.Id))
+                            {
+                                <a href="/Celeb/Index?id=@celebitem.Id" class="link-text" target="_self">@celebitem.Title</a>
+                            }
+                            else
+                            {
+                                <span>@celebitem.Title</span>
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+            <div style="margin-top:10px;">
+                <div style="display:inline-block;">
+                    备注：<span>@item.Note</span>
+                </div>
+                @if (Model.IsCreator)
+                {
+                    <a href="/Album/DeleteItem?id=@Model.Id&movie=@item.MovieInfo.Id&returnurl=@Request.Url" class="link-text pull-right" title="删除 @item.MovieInfo.Title">删除</a>
+                }
+            </div>
+        </div>
+    }
+
+    @if (Model.PagingCount > 1)
+    {
+        @MovieResources.Helpers.Controls.PageTagList(Model.Page, Model.PagingSize, Model.PagingCount, Request.Url.ToString())
+    }
+
+    <div class="modal fade" id="modalAdd" tabindex="-1" role="dialog"
+         aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                @using (Html.BeginForm("AddItem", "Album", new { id = Model.Id, returnurl = Request.Url }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                {
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                            &times;
+                        </button>
+                        <h4 class="modal-title" id="myModalLabel">
+                            添加内容
+                        </h4>
+                    </div>
+                    <div class="modal-body" style="padding:15px 50px;">
+                        <label class="control-label" for="movie" style="margin-top:0px;">电影编号</label>
+                        <input name="movie" id="movie" class="form-control" placeholder="请输入电影编号" style="margin-top: 5px;" />
+                        <label class="control-label" for="note" style="margin-top:12px;">备注</label>
+                        <input name="note" id="note" class="form-control" style="margin-top:5px;" />
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">
+                            关闭
+                        </button>
+                        <input type="submit" class="btn btn-primary" value="提交">
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="col-sm-4" style="margin-top:15px; padding:0px 0px 0px 30px;">
+    <b class="font-larger">什么是专辑&nbsp;&middot;&nbsp;&middot;&nbsp;&middot;&nbsp;&middot;&nbsp;&middot;&nbsp;&middot;</b>
+    <p class="text-capitalize">专辑是收集好电影的工具。</p>
+    <p class="text-capitalize">将你喜欢的电影收集到专辑中，方便以后找到。</p>
+    <hr />
+
+    <b class="font-larger">@Model.UserAccount 的其他专辑&nbsp;&middot;&nbsp;&middot;&nbsp;&middot;&nbsp;&middot;&nbsp;&middot;&nbsp;&middot;</b>
+    <ul class="list-link" style="margin-top:10px;">
+        @foreach (var item in Model.Albums)
+        {
+            <li>
+                <a href="/Album/Detail?id=@item.Id" class="link-list-item">@item.Title</a>
+            </li>
+        }
+    </ul>
+</div>

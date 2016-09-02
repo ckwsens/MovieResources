@@ -1,0 +1,298 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="MRData" Class="MR_DataClassesDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="WebSettings" ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\MRData.mdf;Integrated Security=True" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="MRDataConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.tbl_Album" Member="tbl_Album">
+    <Type Name="tbl_Album">
+      <Column Name="album_Id" Type="System.String" DbType="VarChar(50) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="album_Title" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="album_User" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="album_Item" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="album_Summary" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="album_Time" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="album_AlterTime" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="album_Cover" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="album_Visit" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="tbl_UserAccount_tbl_Album" Member="tbl_UserAccount" ThisKey="album_User" OtherKey="user_Id" Type="tbl_UserAccount" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.tbl_Ask" Member="tbl_Ask">
+    <Type Name="tbl_Ask">
+      <Column Name="ask_Id" Type="System.String" DbType="VarChar(50) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="ask_User" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="ask_Movie" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="ask_Time" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="ask_With" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ask_Note" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="ask_State" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Association Name="tbl_Movie_tbl_Ask" Member="tbl_Movie" ThisKey="ask_Movie" OtherKey="movie_Id" Type="tbl_Movie" IsForeignKey="true" />
+      <Association Name="tbl_UserAccount_tbl_Ask" Member="tbl_UserAccount" ThisKey="ask_User" OtherKey="user_Id" Type="tbl_UserAccount" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.tbl_Celebrity" Member="tbl_Celebrity">
+    <Type Name="tbl_Celebrity">
+      <Column Name="celeb_Id" Type="System.String" DbType="VarChar(50) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="celeb_Name" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="celeb_Aka" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="celeb_NameEn" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="celeb_AkaEn" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="celeb_Gender" Type="System.String" DbType="NVarChar(10)" CanBeNull="true" />
+      <Column Name="celeb_Pro" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="celeb_Birthday" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="celeb_Deathday" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="celeb_BornPlace" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="celeb_Family" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="celeb_Avatar" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="celeb_Works" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="celeb_DoubanID" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="celeb_IMDbID" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="celeb_Summary" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="celeb_Create" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="celeb_Status" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
+      <Column Name="celeb_Note" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="celeb_Time" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="celeb_AlterTime" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Association Name="tbl_Celebrity_tbl_Work" Member="tbl_Work" ThisKey="celeb_Id" OtherKey="work_Celeb" Type="tbl_Work" />
+      <Association Name="tbl_UserAccount_tbl_Celebrity" Member="tbl_UserAccount" ThisKey="celeb_Create" OtherKey="user_Id" Type="tbl_UserAccount" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.tbl_Comment" Member="tbl_Comment">
+    <Type Name="tbl_Comment">
+      <Column Name="cmt_Id" Type="System.String" DbType="VarChar(50) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="cmt_Content" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="cmt_User" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="cmt_Movie" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="cmt_Time" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Association Name="tbl_Movie_tbl_Comment" Member="tbl_Movie" ThisKey="cmt_Movie" OtherKey="movie_Id" Type="tbl_Movie" IsForeignKey="true" />
+      <Association Name="tbl_UserAccount_tbl_Comment" Member="tbl_UserAccount" ThisKey="cmt_User" OtherKey="user_Id" Type="tbl_UserAccount" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.tbl_Country" Member="tbl_Country">
+    <Type Name="tbl_Country">
+      <Column Name="country_Id" Type="System.Byte" DbType="TinyInt NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="country_Name" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.tbl_Discovery" Member="tbl_Discovery">
+    <Type Name="tbl_Discovery">
+      <Column Name="disc_Id" Type="System.String" DbType="VarChar(50) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="disc_Movie" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="disc_Image" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="disc_Flag" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="disc_Time" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Association Name="tbl_Movie_tbl_Discovery" Member="tbl_Movie" ThisKey="disc_Movie" OtherKey="movie_Id" Type="tbl_Movie" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.tbl_GenreMovie" Member="tbl_GenreMovie">
+    <Type Name="tbl_GenreMovie">
+      <Column Name="genre_Id" Type="System.Byte" DbType="TinyInt NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="genre_Name" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.tbl_Language" Member="tbl_Language">
+    <Type Name="tbl_Language">
+      <Column Name="lang_Id" Type="System.Byte" DbType="TinyInt NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="lang_Name" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.tbl_Movie" Member="tbl_Movie">
+    <Type Name="tbl_Movie">
+      <Column Name="movie_Id" Type="System.String" DbType="VarChar(50) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="movie_Title" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="movie_TitleEn" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="movie_Aka" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="movie_Directors" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="movie_Writers" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="movie_Casts" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="movie_DirectorsId" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="movie_WritersId" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="movie_CastsId" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="movie_Year" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="movie_Pubdates" Type="System.String" DbType="NVarChar(200)" CanBeNull="true" />
+      <Column Name="movie_Durations" Type="System.String" DbType="NVarChar(200)" CanBeNull="true" />
+      <Column Name="movie_Genres" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="movie_Languages" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="movie_Countries" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="movie_Rating" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="movie_RatingCount" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="movie_DoubanID" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="movie_IMDbID" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="movie_Summary" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="movie_Avatar" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="movie_Create" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="movie_Status" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
+      <Column Name="movie_Note" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="movie_Time" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="movie_AlterTime" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="movie_VisitCount" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="tbl_Movie_tbl_Ask" Member="tbl_Ask" ThisKey="movie_Id" OtherKey="ask_Movie" Type="tbl_Ask" />
+      <Association Name="tbl_Movie_tbl_Comment" Member="tbl_Comment" ThisKey="movie_Id" OtherKey="cmt_Movie" Type="tbl_Comment" />
+      <Association Name="tbl_Movie_tbl_Discovery" Member="tbl_Discovery" ThisKey="movie_Id" OtherKey="disc_Movie" Type="tbl_Discovery" />
+      <Association Name="tbl_Movie_tbl_Resource" Member="tbl_Resource" ThisKey="movie_Id" OtherKey="res_Movie" Type="tbl_Resource" />
+      <Association Name="tbl_Movie_tbl_Work" Member="tbl_Work" ThisKey="movie_Id" OtherKey="work_Movie" Type="tbl_Work" />
+      <Association Name="tbl_UserAccount_tbl_Movie" Member="tbl_UserAccount" ThisKey="movie_Create" OtherKey="user_Id" Type="tbl_UserAccount" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.tbl_Notice" Member="tbl_Notice">
+    <Type Name="tbl_Notice">
+      <Column Name="notice_Id" Type="System.String" DbType="VarChar(50) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="notice_Content" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="notice_Res" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="notice_User" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="notice_Time" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="notice_Flag" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
+      <Association Name="tbl_Resource_tbl_Notice" Member="tbl_Resource" ThisKey="notice_Res" OtherKey="res_Id" Type="tbl_Resource" IsForeignKey="true" />
+      <Association Name="tbl_UserAccount_tbl_Notice" Member="tbl_UserAccount" ThisKey="notice_User" OtherKey="user_Id" Type="tbl_UserAccount" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.tbl_Resource" Member="tbl_Resource">
+    <Type Name="tbl_Resource">
+      <Column Name="res_Id" Type="System.String" DbType="VarChar(50) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="res_Name" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="res_Content" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="res_Size" Type="System.Single" DbType="Real" CanBeNull="true" />
+      <Column Name="res_User" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="res_Movie" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="res_Time" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="res_FavorCount" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="res_Type" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
+      <Column Name="res_Status" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
+      <Column Name="res_Note" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Association Name="tbl_Resource_tbl_Notice" Member="tbl_Notice" ThisKey="res_Id" OtherKey="notice_Res" Type="tbl_Notice" />
+      <Association Name="tbl_Movie_tbl_Resource" Member="tbl_Movie" ThisKey="res_Movie" OtherKey="movie_Id" Type="tbl_Movie" IsForeignKey="true" />
+      <Association Name="tbl_UserAccount_tbl_Resource" Member="tbl_UserAccount" ThisKey="res_User" OtherKey="user_Id" Type="tbl_UserAccount" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.tbl_UserAccount" Member="tbl_UserAccount">
+    <Type Name="tbl_UserAccount">
+      <Column Name="user_Id" Type="System.String" DbType="VarChar(50) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="user_Account" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="user_Password" Type="System.String" DbType="VarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="user_EmailAddress" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="user_Avatar" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="user_Cover" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="user_CreateTime" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="user_AlterTime" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="user_IsAdmin" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Association Name="tbl_UserAccount_tbl_Album" Member="tbl_Album" ThisKey="user_Id" OtherKey="album_User" Type="tbl_Album" />
+      <Association Name="tbl_UserAccount_tbl_Ask" Member="tbl_Ask" ThisKey="user_Id" OtherKey="ask_User" Type="tbl_Ask" />
+      <Association Name="tbl_UserAccount_tbl_Celebrity" Member="tbl_Celebrity" ThisKey="user_Id" OtherKey="celeb_Create" Type="tbl_Celebrity" />
+      <Association Name="tbl_UserAccount_tbl_Comment" Member="tbl_Comment" ThisKey="user_Id" OtherKey="cmt_User" Type="tbl_Comment" />
+      <Association Name="tbl_UserAccount_tbl_Movie" Member="tbl_Movie" ThisKey="user_Id" OtherKey="movie_Create" Type="tbl_Movie" />
+      <Association Name="tbl_UserAccount_tbl_Notice" Member="tbl_Notice" ThisKey="user_Id" OtherKey="notice_User" Type="tbl_Notice" />
+      <Association Name="tbl_UserAccount_tbl_Resource" Member="tbl_Resource" ThisKey="user_Id" OtherKey="res_User" Type="tbl_Resource" />
+      <Association Name="tbl_UserAccount_tbl_Mark" Member="tbl_Mark" ThisKey="user_Id" OtherKey="mark_User" Type="tbl_Mark" />
+    </Type>
+  </Table>
+  <Table Name="dbo.tbl_Work" Member="tbl_Work">
+    <Type Name="tbl_Work">
+      <Column Name="work_Id" Type="System.String" DbType="VarChar(50) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="work_Movie" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="work_Celeb" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="work_Type" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
+      <Association Name="tbl_Celebrity_tbl_Work" Member="tbl_Celebrity" ThisKey="work_Celeb" OtherKey="celeb_Id" Type="tbl_Celebrity" IsForeignKey="true" />
+      <Association Name="tbl_Movie_tbl_Work" Member="tbl_Movie" ThisKey="work_Movie" OtherKey="movie_Id" Type="tbl_Movie" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.tbl_Mark" Member="tbl_Mark">
+    <Type Name="tbl_Mark">
+      <Column Name="mark_Id" Type="System.String" DbType="VarChar(50) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="mark_Type" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="mark_User" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="mark_Target" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="mark_Time" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Association Name="tbl_UserAccount_tbl_Mark" Member="tbl_UserAccount" ThisKey="mark_User" OtherKey="user_Id" Type="tbl_UserAccount" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Function Name="dbo.AlterAlbumAlterTime" Method="AlterAlbumAlterTime">
+    <Parameter Name="ALBUMID" Parameter="aLBUMID" Type="System.String" DbType="VarChar(50)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.AlterCelebAlterTime" Method="AlterCelebAlterTime">
+    <Parameter Name="CELEBID" Parameter="cELEBID" Type="System.String" DbType="VarChar(50)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.AlterMovieAlterTime" Method="AlterMovieAlterTime">
+    <Parameter Name="MOVIEID" Parameter="mOVIEID" Type="System.String" DbType="VarChar(50)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.AlterUserAlterTime" Method="AlterUserAlterTime">
+    <Parameter Name="USERID" Parameter="uSERID" Type="System.String" DbType="VarChar(50)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.InsertCountry" Method="InsertCountry">
+    <Parameter Name="COUNTRYNAME" Parameter="cOUNTRYNAME" Type="System.String" DbType="NVarChar(50)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.InsertGenre" Method="InsertGenre">
+    <Parameter Name="GENRENAME" Parameter="gENRENAME" Type="System.String" DbType="NVarChar(50)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.InsertLang" Method="InsertLang">
+    <Parameter Name="LANGNAME" Parameter="lANGNAME" Type="System.String" DbType="NVarChar(50)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.SetAlbumTime" Method="SetAlbumTime">
+    <Parameter Name="ALBUMID" Parameter="aLBUMID" Type="System.String" DbType="VarChar(50)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.SetAskTime" Method="SetAskTime">
+    <Parameter Name="ASKID" Parameter="aSKID" Type="System.String" DbType="VarChar(50)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.SetCelebTime" Method="SetCelebTime">
+    <Parameter Name="CELEBID" Parameter="cELEBID" Type="System.String" DbType="VarChar(50)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.SetMarkCelebTime" Method="SetMarkCelebTime">
+    <Parameter Name="MARKID" Parameter="mARKID" Type="System.String" DbType="VarChar(50)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.SetMarkMovieTime" Method="SetMarkMovieTime">
+    <Parameter Name="MARKID" Parameter="mARKID" Type="System.String" DbType="VarChar(50)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.SetMovieTime" Method="SetMovieTime">
+    <Parameter Name="MOVIEID" Parameter="mOVIEID" Type="System.String" DbType="VarChar(50)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.SetResTime" Method="SetResTime">
+    <Parameter Name="RESID" Parameter="rESID" Type="System.String" DbType="VarChar(50)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.SetUserTime" Method="SetUserTime">
+    <Parameter Name="USERID" Parameter="uSERID" Type="System.String" DbType="VarChar(50)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.SetWithTime" Method="SetWithTime">
+    <Parameter Name="WITHID" Parameter="wITHID" Type="System.String" DbType="VarChar(50)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.UpdateCelebWork" Method="UpdateCelebWork">
+    <Parameter Name="CelebId" Parameter="celebId" Type="System.String" DbType="VarChar(50)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.UpdateMovieCeleb" Method="UpdateMovieCeleb">
+    <Parameter Name="MovieId" Parameter="movieId" Type="System.String" DbType="VarChar(50)" />
+    <Parameter Name="CelebType" Parameter="celebType" Type="System.Byte" DbType="TinyInt" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.SetFavorTime" Method="SetFavorTime">
+    <Parameter Name="FAVORID" Parameter="fAVORID" Type="System.String" DbType="VarChar(50)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.SetFollowTime" Method="SetFollowTime">
+    <Parameter Name="FOLLOWID" Parameter="fOLLOWID" Type="System.String" DbType="VarChar(50)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.AlterFavorCount" Method="AlterFavorCount">
+    <Parameter Name="ResId" Parameter="resId" Type="System.String" DbType="VarChar(50)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.SetDiscTime" Method="SetDiscTime">
+    <Parameter Name="DISCID" Parameter="dISCID" Type="System.String" DbType="VarChar(50)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.SetCmtTime" Method="SetCmtTime">
+    <Parameter Name="CMTID" Parameter="cMTID" Type="System.String" DbType="VarChar(50)" />
+    <Return Type="System.Int32" />
+  </Function>
+</Database>

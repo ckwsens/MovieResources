@@ -1,0 +1,28 @@
+﻿@{
+    Layout = "~/Views/Shared/_LayoutPage.cshtml";
+    ViewBag.PageType = 2;
+}
+
+<div class="panel panel-body">
+    <div class="pull-left">
+        <a href="/Mine/">
+            <img width="64" height="64" title="@ViewBag.Account" src="~/Content/User/Avatar/@ViewBag.Avatar" style="box-shadow:2px 2px 10px #BBBBBB;"/>
+        </a>
+    </div>
+    <div class="pull-left" style="margin-left:20px;">
+        <div>
+            <span style="margin:0px; padding:0px; font-size:24px;">@ViewBag.Title</span>
+        </div>
+        <div style="margin-top:10px;">
+            <a class="link-text" href="/Mine/MineMovie?type=1">电影</a>
+            <a class="link-text" href="/Mine/MineCeleb?type=1">影人</a>
+            <a class="link-text" href="/Mine/MineRes">资源</a>
+            <a class="link-text" href="/Mine/MineAlbum?type=1">专辑</a>
+            &Iota;
+            <a class="link-text" href="/Mine/ChangeAvatar">设置</a>
+            <a class="link-text" href="/Mine/">我的主页</a>
+        </div>
+    </div>
+</div>
+
+@RenderBody()

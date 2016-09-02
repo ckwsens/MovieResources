@@ -1,0 +1,501 @@
+﻿@model MovieResources.Models.MovieViewModel
+
+@{
+    ViewBag.Title = Model.Title;
+    ViewBag.PageType = 2;
+}
+
+@Scripts.Render("~/bundles/smoothscroll")
+@*@Scripts.Render("~/bundles/backstrech")
+<script>
+    $(document).ready(function () {
+        $.backstretch("../../Content/Account/MovieBack.png");
+    });
+</script>*@
+<script>
+    $(document).ready(function () {
+        $("#link-to-details").smoothScroll();
+        $("#link-to-summary").smoothScroll();
+        $("#link-to-resources").smoothScroll();
+        $("#link-to-comments").smoothScroll();
+    });
+
+    $(document).ready(function () {
+        $("#btnDisplay").click(function () {
+            $("#summaryshort").slideUp(500);
+            $("#summarylong").slideDown(500);
+        });
+        $("#btnHidden").click(function () {
+            $("#summaryshort").slideDown(500);
+            $("#summarylong").slideUp(500);
+        });
+    });
+</script>
+<style>
+    .comment-item {
+        margin: 0 0 12px 0;
+        padding-bottom: 10px;
+        border-bottom: 1px dashed #ddd;
+        overflow: hidden;
+    }
+
+        .comment-item .comment {
+            overflow: hidden;
+            word-wrap: break-word;
+        }
+
+        .comment-item .avatar {
+            float: left;
+            margin-right: 15px;
+        }
+
+        .comment-item div {
+            background: 0;
+            height: auto;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+
+    .list-tab a {
+        padding: 10px 0px;
+        margin: 0px 15px;
+        color: #222222;
+        font-size: 15px;
+    }
+
+        .list-tab a:hover,
+        .list-tab a:focus,
+        .list-tab a:active {
+            font-weight: bold;
+            text-decoration: none;
+            border-bottom: 2px solid #007711;
+        }
+</style>
+
+<div class="modal fade" id="modalCmt" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            @using (Html.BeginForm("Create", "Comment", new { movie = Model.Id, returnurl = Request.Url }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+            {
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">
+                        添加内容
+                    </h4>
+                </div>
+                <div class="modal-body" style="padding:15px 50px;">
+                    <label class="control-label" for="content" style="margin-top:0px;">简短评论</label>
+                    <textarea name="content" id="content" class="form-control" placeholder="请输入评论内容" style="margin-top: 10px; height:99px;"></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">
+                        关闭
+                    </button>
+                    <input type="submit" class="btn btn-primary" value="提交">
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<div class="panel panel-default" style="margin-top:167px;">
+    <div style="float:left; display:inline-block; margin-top:-167px; margin-left:25px; margin-right:25px; padding:3px; background-color:white; box-shadow:0px 0px 10px #999999;">
+        <img src="~/Content/Movie/@Model.Avatar" class="img-responsive" title="@Model.Title" style="width:170px; height:240px;" />
+    </div>
+    <div>
+        <div class="font-larger" style="margin-top:10px; margin-bottom:10px;">
+            <strong>@Model.Title&nbsp;&nbsp;&nbsp;&nbsp;@Model.TitleEn</strong><small style="display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;(@Model.Year)</small>
+        </div>
+        <div style="margin-bottom:10px;">
+            @if (!Model.IsPlan)
+            {
+                <a class="btn btn-mark" title="想看" href="/Mark/Create?target=@Model.Id&type=1&returnurl=@Request.Url"><span class="fa fa-clock-o" aria-hidden="true"></span> 想看</a>
+            }
+            else
+            {
+                <a class="btn btn-mark-inverse" title="取消想看" href="/Mark/Cancel?target=@Model.Id&type=1&returnurl=@Request.Url"><span class="fa fa-clock-o" aria-hidden="true"></span> 想看</a>
+            }
+            @if (!Model.IsFinish)
+            {
+                <a class="btn btn-mark" title="看过" href="/Mark/Create?target=@Model.Id&type=2&returnurl=@Request.Url"><span class="fa fa-check-circle-o" aria-hidden="true"></span> 看过</a>
+            }
+            else
+            {
+                <a class="btn btn-mark-inverse" title="取消看过" href="/Mark/Cancel?target=@Model.Id&type=2&returnurl=@Request.Url"><span class="fa fa-check-circle-o" aria-hidden="true"></span> 看过</a>
+            }
+            @if (!Model.IsFavor)
+            {
+                <a class="btn btn-mark" title="喜欢" href="/Mark/Create?target=@Model.Id&type=3&returnurl=@Request.Url"><span class="fa fa-heart-o" aria-hidden="true"></span> 喜欢</a>
+            }
+            else
+            {
+                <a class="btn btn-mark-inverse" title="取消喜欢" href="/Mark/Cancel?target=@Model.Id&type=3&returnurl=@Request.Url" aria-hidden="true"><span class="fa fa-heart-o"></span> 喜欢</a>
+            }
+            @if (Model.IsCreate)
+            {
+                <a class="btn btn-mark tipup" href="/Movie/Edit?id=@Model.Id" title="修改 @Model.Title" data-toggle="tooltip" data-placement="top"><i class="fa fa-edit" aria-hidden="true"></i></a>
+                if (!string.IsNullOrEmpty(Model.DoubanID))
+                {
+                    <a class="btn btn-mark tipup" href="/Movie/Refresh?id=@Model.Id" title="更新 @Model.Title" data-toggle="tooltip" data-placement="top"><i class="fa fa-refresh" aria-hidden="true"></i></a>
+                }
+                <a class="btn btn-mark tipup" href="/Movie/Delete?id=@Model.Id" title="删除 @Model.Title" data-toggle="tooltip" data-placement="top"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
+            }
+        </div>
+    </div>
+
+    <div class="panel-footer text-center no-padding" style="background-color:transparent; padding:10px;">
+        <div class="list-tab">
+            <a href="#details" id="link-to-details">&nbsp;&nbsp;详情&nbsp;&nbsp;</a>
+            <a href="#summary" id="link-to-summary">&nbsp;&nbsp;简介&nbsp;&nbsp;</a>
+            <a href="#resources" id="link-to-resources">&nbsp;&nbsp;资源&nbsp;&nbsp;</a>
+            <a href="#comments" id="link-to-comments">&nbsp;&nbsp;评论&nbsp;&nbsp;</a>
+        </div>
+    </div>
+</div>
+
+<div class="col-sm-9 no-padding">
+    @*详情*@
+    <div class="panel panel-default" id="details">
+        <div class="panel-heading text-center">
+            ————&nbsp;&nbsp;<strong>电影详情</strong>&nbsp;&nbsp;————
+        </div>
+        <div class="panel-body">
+            <ul style="list-style:none; padding:0px; margin:0px;">
+                <li>
+                    <span style="color:#808080;">更多电影名:</span>
+                    @Html.DisplayFor(model => model.Aka)
+                </li>
+
+                <li>
+                    <span style="color:#808080;">导演:</span>
+                    @foreach (var item in Model.Directors)
+                    {
+                        if (!string.IsNullOrEmpty(item.Id))
+                        {
+                            <a href="/Celeb/Index?id=@item.Id" class="link-text" target="_self">@item.Title</a>
+                        }
+                        else
+                        {
+                            <span>@item.Title</span>
+                        }
+                    }
+                </li>
+
+                <li>
+                    <span style="color:#808080;">编剧:</span>
+                    @foreach (var item in Model.Writers)
+                    {
+                        if (!string.IsNullOrEmpty(item.Id))
+                        {
+                            <a href="/Celeb/Index?id=@item.Id" class="link-text" target="_self">@item.Title</a>
+                        }
+                        else
+                        {
+                            <span>@item.Title</span>
+                        }
+                    }
+                </li>
+
+                <li>
+                    <span style="color:#808080;">演员:</span>
+                    @foreach (var item in Model.Casts)
+                    {
+                        if (!string.IsNullOrEmpty(item.Id))
+                        {
+                            <a href="/Celeb/Index?id=@item.Id" class="link-text" target="_self">@item.Title</a>
+                        }
+                        else
+                        {
+                            <span>@item.Title</span>
+                        }
+                    }
+                </li>
+
+                <li>
+                    <span style="color:#808080;">上映日期:</span>
+                    @Html.DisplayFor(model => model.Pubdates)
+                </li>
+
+                <li>
+                    <span style="color:#808080;">片长:</span>
+                    @Html.DisplayFor(model => model.Durations)
+                </li>
+
+                <li>
+                    <span style="color:#808080;">类型:</span>
+                    @Html.DisplayFor(model => model.Genres)
+                </li>
+
+                <li>
+                    <span style="color:#808080;">制片国家/地区:</span>
+                    @Html.DisplayFor(model => model.Countries)
+                </li>
+
+                <li>
+                    <span style="color:#808080;">语言:</span>
+                    @Html.DisplayFor(model => model.Languages)
+                </li>
+
+                <li>
+                    <span style="color:#808080;">评分:</span>
+                    @Html.DisplayFor(model => model.Rating)
+                </li>
+
+                @if (!string.IsNullOrEmpty(Model.DoubanID) && !string.IsNullOrWhiteSpace(Model.DoubanID))
+                {
+                    <li>
+                        <span style="color:#808080;">豆瓣链接:</span>
+                        <a href="https://movie.douban.com/subject/@Model.DoubanID/" class="link-text" target="_self">@Model.DoubanID</a>
+                    </li>
+                }
+
+                @if (!string.IsNullOrEmpty(Model.IMDbID) && !string.IsNullOrWhiteSpace(Model.IMDbID))
+                {
+                    <li>
+                        <span style="color:#808080;">IMDb链接:</span>
+                        <a href="http://www.imdb.com/title/@Model.IMDbID/" class="link-text" target="_self">@Model.IMDbID</a>
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+
+    @*简介*@
+    <div class="panel panel-default" id="summary">
+        <div class="panel-heading text-center">
+            ————&nbsp;&nbsp;<strong>剧情介绍</strong>&nbsp;&nbsp;————
+        </div>
+        <div class="panel-body" id="divbody">
+            @if (!string.IsNullOrEmpty(Model.SummaryShort))
+            {
+                <div id="summarylong" style="display:none;">
+                    @foreach (var item in Model.SummaryPara)
+                    {
+                        <p>@item</p>
+                    }
+                    <a id="btnHidden" href="javascript: void(0);" class="link-text">(收起)</a>
+                </div>
+                <div id="summaryshort" style="display:block;">
+                    @Model.SummaryShort
+                    <a id="btnDisplay" href="javascript: void(0);" class="link-text">(展开全部)</a>
+                </div>
+            }
+        </div>
+    </div>
+
+    @*资源*@
+    <div class="panel panel-default" id="resources">
+        <div class="panel-heading text-center">
+            ————&nbsp;&nbsp;<strong>所有资源</strong>&nbsp;&nbsp;————
+            <div class="pull-right" style="margin-top:-7px;">
+                <a class="btn btn-default btn-mark tipup" href="/Ask/Create?id=@Model.Id" title="为 @Model.Title 求资源" data-toggle="tooltip" data-placement="top"><i class="fa fa-ellipsis-h" aria-hidden="true"></i></a>
+                <a class="btn btn-default btn-mark tipup" href="/Resource/Create?id=@Model.Id" title="为 @Model.Title 添加资源" data-toggle="tooltip" data-placement="top"><i class="fa fa-plus" aria-hidden="true"></i></a>
+            </div>
+        </div>
+        <div class="panel-body">
+            @if (Model.Resources.Count == 0)
+            {
+                <div class="text-center">
+                    这部电影还没有资源呢(＃￣▽￣＃),
+                    <a class="link-text" href="/Resource/Create?id=@Model.Id" title="为 @Model.Title 添加资源">上传资源</a>
+                </div>
+            }
+            else
+            {
+                <table class="table table-hover no-margin">
+                    <thead>
+                        <tr>
+                            <th>
+                                来源
+                            </th>
+                            <th>
+                                类型
+                            </th>
+                            <th>
+                                标题
+                            </th>
+                            <th>
+                                大小
+                            </th>
+                            <th>
+                                #
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.Resources)
+                        {
+                            <tr>
+                                @if (item.User != null)
+                                {
+                                    <td>
+                                        <a href="/People/Index?id=@item.User&returnurl=@Request.Url" class="link-text" target="_self" title="@item.Account 的主页">@item.Account</a>
+                                    </td>
+                                }
+                                else
+                                {
+                                    <td></td>
+                                }
+                                @if (item.ResType == 0)
+                                {
+                                    <td>
+                                        <span class="fa fa-link" title="电驴链接"></span>
+                                    </td>
+                                    <td>
+                                        <a title="下载" href="@item.Content" class="link-text">@item.FileName</a>
+                                    </td>
+                                }
+                                else if (item.ResType == 1)
+                                {
+                                    <td>
+                                        <span class="fa fa-magnet" title="磁力链"></span>
+                                    </td>
+                                    <td>
+                                        <a title="下载" href="@item.Content" class="link-text">@item.FileName</a>
+                                    </td>
+                                }
+                                else
+                                {
+                                    <td>
+                                        <span class="fa fa-file-movie-o" title="bt种子"></span>
+                                    </td>
+                                    <td>
+                                        <a title="下载" href="/Movie/DownTorrent?filename=@item.Content" class="link-text">@item.FileName</a>
+                                    </td>
+                                }
+                                <td>
+                                    @item.FileSize
+                                </td>
+                                <td>
+                                    <a class="btn btn-xs" title="有用" href="/Resource/Favor?id=@item.Id&returnurl=@Request.Url"><span class="fa fa-thumbs-o-up"></span>&nbsp;@item.FavorCount</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+        </div>
+    </div>
+
+    @*评论*@
+    <div class="panel panel-default" id="comments">
+        <div class="panel-heading text-center">
+            ————&nbsp;&nbsp;<strong>@Model.Title 的短评</strong>(<a class="link-text" href="/Movie/Comment?id=@Model.Id" target="_self">全部 @Model.CommentCount 条</a>)&nbsp;&nbsp;————
+        </div>
+        <div class="panel-body">
+            @if (Model.Comments.Count == 0)
+            {
+                <div class="text-center">
+                    还没有人评论过这部电影(＃￣▽￣＃)
+                    @if (Model.IsFinish)
+                    {
+                        <span>,</span>
+                        <a class="link-text" title="插入短评" data-toggle="modal" data-target="#modalCmt">评论一下吧</a>
+                    }
+                </div>
+            }
+            @foreach (var item in Model.Comments)
+            {
+                <div class="comment-item">
+                    <div class="avatar">
+                        <a class="link-avatar" title="@item.UserAccount" href="/People/Index?id=@item.UserId&returnurl=@Request.Url" target="_self">
+                            <img src="~/Content/User/Avatar/@item.UserAvatar" style="width: 54px;height: 54px; border-radius: 27px;">
+                        </a>
+                    </div>
+                    <div class="comment">
+                        <div>
+                            <span>
+                                <a title="@item.UserAccount" href="/People/Index?id=@item.UserId" class="link-text" target="_self">@item.UserAccount</a>
+                            </span>
+                            <span>
+                                &nbsp;&nbsp; @item.Time
+                            </span>
+                        </div>
+                        <p class="">
+                            @item.Content
+                        </p>
+                    </div>
+                </div>
+            }
+            @if (Model.Comments.Count != 0)
+            {
+                <div>
+                    <a class="link-text" href="/Movie/Comment?id=@Model.Id" target="_self">查看全部</a>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<div class="col-sm-3 div-right">
+    @*关注度*@
+    <div class="panel panel-body">
+        <div class="col-xs-4 text-center" style="border-right:1px solid #CCCCCC;">
+            <div>@Model.PlanCount</div>
+            <div>想看</div>
+        </div>
+        <div class="col-xs-4 text-center" style="border-right:1px solid #CCCCCC;">
+            <div>@Model.FinishCount</div>
+            <div>已看</div>
+        </div>
+        <div class="col-xs-4 text-center">
+            <div>@Model.FavorCount</div>
+            <div>喜欢</div>
+        </div>
+    </div>
+
+    @*我的评论*@
+    <div class="panel panel-default">
+        <div class="panel-heading text-center">
+            ————&nbsp;&nbsp;<strong>我的短评</strong>&nbsp;&nbsp;————
+        </div>
+        <div class="panel-body">
+            @if (!Model.IsFinish)
+            {
+                <p class="text-muted">Tips: 标记为已看后，可以写一句话影评。</p>
+            }
+            else
+            {
+                if (Model.MyComment == null)
+                {
+                    <a class="link-text" title="插入短评" data-toggle="modal" data-target="#modalCmt">插入短评</a>
+                }
+                else
+                {
+                    <span>我的短评：@Model.MyComment.Content</span>
+                    <a class="link-text font-small" title="删除" href="/Comment/Delete?id=@Model.MyComment.Id&returnurl=@Request.Url">删除</a>
+                }
+            }
+        </div>
+    </div>
+
+    @*相关专辑*@
+    <div class="panel panel-default">
+        <div class="panel-heading text-center">
+            ————&nbsp;&nbsp;<strong>相关专辑</strong>&nbsp;&nbsp;————
+        </div>
+        <div class="panel-body">
+            @if (Model.Albums.Count == 0)
+            {
+                <div class="text-center">
+                    没有专辑包含这部电影(＃￣▽￣＃)
+                </div>
+            }
+            else
+            {
+                <ul class="list-link">
+                    @foreach (var item in Model.Albums)
+                    {
+                        <li>
+                            <a class="link-list-item" href="/Album/Detail?id=@item.Id" title="@item.Title" target="_self">@item.Title</a>
+                        </li>
+                    }
+                </ul>
+            }
+        </div>
+    </div>
+</div>

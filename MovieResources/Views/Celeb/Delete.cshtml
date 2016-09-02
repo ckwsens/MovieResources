@@ -1,0 +1,75 @@
+﻿@model MovieResources.Models.ManageCelebViewModel
+
+@{
+    ViewBag.Title = "删除 " + Model.Name;
+    ViewBag.PageType = 2;
+}
+
+<div class="panel panel-body text-center no-padding">
+    <h4>@ViewBag.Title</h4>
+</div>
+
+<div class="panel panel-default">
+    <div class="panel-body">
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.Name)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Name)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Aka)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Aka)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Gender)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Gender)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Birthday)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Birthday)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Deathday)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Deathday)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Pro)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Pro)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Family)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Family)
+            </dd>
+        </dl>
+    </div>
+
+    <div class="panel-footer">
+        @using (Html.BeginForm("Delete", "Celeb", routeValues: new { returnurl = ViewBag.ReturnUrl, id = Model.Id }))
+        {
+            @Html.AntiForgeryToken()
+            <div class="form-actions no-color">
+                <input type="submit" value="确认删除" class="btn btn-primary btn-block" />
+            </div>
+        }
+    </div>
+</div>

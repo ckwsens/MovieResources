@@ -1,0 +1,68 @@
+﻿@model List<MovieResources.Models.ManageAlbumViewModel>
+
+@{
+    ViewBag.Title = "我的专辑";
+    Layout = "~/Areas/Manage/Views/Shared/_Layout.cshtml";
+    ViewBag.Page = 4;
+}
+<div class="panel panel-default">
+    <div class="panel-heading">
+        @using (Html.BeginForm("Index", "Album", FormMethod.Get, new { @class = "form-inline", role = "form" }))
+        {
+            <div class="input-group">
+                <span class="input-group-addon">
+                    <i class="fa fa-search"></i>
+                </span>
+                @Html.TextBox("search", null, new { @class = "form-control", role = "input", placeholder = "请输入关键字" })
+            </div>
+            @Html.ActionLink(linkText: "新建专辑", actionName: "Create", routeValues: null, htmlAttributes: new { @class = "btn btn-primary" })
+        }
+    </div>
+    <div class="panel-body">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>
+                        名称
+                    </th>
+                    <th>
+                        创建日期
+                    </th>
+                    <th>
+                        修改日期
+                    </th>
+                    <th>
+                        简介
+                    </th>
+                    <th>
+                        #
+                    </th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.RouteLink(linkText: @item.Title, routeName: "Default", routeValues: new { controller = "Album", action = "Detail", id = @item.Id }, htmlAttributes: new { @class = "link-text", target = "_self" })
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CreateTime)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.AlterTime)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Summary)
+                        </td>
+                        <td>
+                            <a class="btn btn-mark-xs" title="修改" href="/Manage/Album/Edit?id=@item.Id"><span class="fa fa-edit"></span></a>
+                            <a class="btn btn-mark-xs" title="删除" href="/Manage/Album/Delete?id=@item.Id"><span class="fa fa-trash"></span></a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

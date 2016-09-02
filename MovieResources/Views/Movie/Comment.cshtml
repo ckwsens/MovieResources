@@ -1,0 +1,125 @@
+﻿@model MovieResources.Models.MovieViewModel
+
+@{
+    ViewBag.Title = Model.Title + "的短评";
+    ViewBag.PageType = 2;
+}
+
+<style>
+    .comment-item {
+        margin: 0 0 12px 0;
+        padding-bottom: 10px;
+        border-bottom: 1px dashed #ddd;
+        overflow: hidden;
+    }
+
+        .comment-item .comment {
+            overflow: hidden;
+            word-wrap: break-word;
+        }
+
+        .comment-item .avatar {
+            float: left;
+            margin-right: 15px;
+        }
+
+        .comment-item div {
+            background: 0;
+            height: auto;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+</style>
+
+<div class="panel panel-body col-sm-8" style="margin-bottom:20px;">
+    <h4>
+        <a href="/Movie/Index?id=@Model.Id" class="link-text" target="_self" title="去 @Model.Title 的页面">@Model.Title</a>
+        的短评&nbsp;&nbsp;·&nbsp;&nbsp;·&nbsp;&nbsp;·&nbsp;&nbsp;·&nbsp;&nbsp;·&nbsp;&nbsp;·
+    </h4>
+    <h6>全部共 @Model.CommentCount 条</h6>
+    <hr />
+    @if (Model.Comments.Count == 0)
+    {
+        <div class="text-center">
+            这里空荡荡的，什么也没有(＃￣▽￣＃)
+        </div>
+    }
+    else
+    {
+        foreach (var item in Model.Comments)
+        {
+            <div class="comment-item">
+                <div class="avatar">
+                    <a title="@item.UserAccount" href="/People/Index?id=@item.UserId&returnurl=@Request.Url" target="_self" class="link-avatar">
+                        <img src="~/Content/User/Avatar/@item.UserAvatar" style="width: 54px;height: 54px; border-radius: 27px;">
+                    </a>
+                </div>
+                <div class="comment">
+                    <div>
+                        <span>
+                            <a title="@item.UserAccount" href="/People/Index?id=@item.UserId" class="link-text" target="_self">@item.UserAccount</a>
+                        </span>
+                        <span>
+                            &nbsp;&nbsp; @item.Time
+                        </span>
+                    </div>
+                    <p class="">
+                        @item.Content
+                    </p>
+                </div>
+            </div>
+        }
+    }
+</div>
+
+<div class="col-sm-4" style="padding-left:20px; margin-bottom:20px;">
+    <div>
+        <a href="/Movie/Index?id=@Model.Id" class="link-text" target="_self" title="去 @Model.Title 的页面">>去 @Model.Title 的页面</a>
+    </div>
+    <div style="margin-top:20px;">
+        <a href="/Movie/Index?id=@Model.Id" target="_self">
+            <img src="~/Content/Movie/@Model.Avatar" class="img-thumbnail" title="@Model.Title" style="height:225px;" />
+        </a>
+    </div>
+    <div style="margin-top:5px;">
+        导演:
+        @foreach (var celebitem in Model.Directors.Take(4))
+            {
+                if (!string.IsNullOrEmpty(celebitem.Id))
+                {
+                <a href="/Celeb/Index?id=@celebitem.Id" class="link-text" target="_self">@celebitem.Title</a>
+            }
+            else
+            {
+                <span>@celebitem.Title</span>
+            }
+        }
+    </div>
+    <div style="margin-top:5px;">
+        主演:
+        @foreach (var celebitem in Model.Casts.Take(4))
+            {
+                if (!string.IsNullOrEmpty(celebitem.Id))
+                {
+                <a href="/Celeb/Index?id=@celebitem.Id" class="link-text" target="_self">@celebitem.Title</a>
+            }
+            else
+            {
+                <span>@celebitem.Title</span>
+            }
+        }
+    </div>
+    <div style="margin-top:5px;">
+        类型: <span>@Model.Genres</span>
+    </div>
+    <div style="margin-top:5px;">
+        地区: <span>@Model.Countries</span>
+    </div>
+    <div style="margin-top:5px;">
+        片长: <span>@Model.Durations</span>
+    </div>
+    <div style="margin-top:5px;">
+        上映: <span>@Model.Pubdates</span>
+    </div>
+</div>

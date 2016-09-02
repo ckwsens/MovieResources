@@ -1,0 +1,102 @@
+﻿@model MovieResources.Models.MineAlbumViewModel
+
+@{
+    Layout = "~/Views/Mine/_LayoutPage.cshtml";
+    ViewBag.Avatar = Model.Avatar;
+    ViewBag.Account = Model.Account;
+    if (ViewBag.AlbumType == 1)
+    {
+        ViewBag.Title = "我创建的专辑(" + Model.AlbumCount + ")";
+    }
+    else if (ViewBag.AlbumType == 2)
+    {
+        ViewBag.Title = "我关注的专辑(" + Model.FollowCount + ")";
+    }
+}
+
+<div class="panel panel-body">
+    <ul class="nav nav-tabs">
+        @if (ViewBag.AlbumType == 1)
+        {
+            <li class="active"><a href="/Mine/MineAlbum?type=1">创建的(@Model.AlbumCount)     </a></li>
+        }
+        else
+        {
+            <li class=""><a href="/Mine/MineAlbum?type=1">创建的(@Model.AlbumCount)     </a></li>
+        }
+        @if (ViewBag.AlbumType == 2)
+        {
+            <li class="active"><a href="/Mine/MineAlbum?type=2">关注的(@Model.FollowCount)     </a></li>
+        }
+        else
+        {
+            <li class=""><a href="/Mine/MineAlbum?type=2">关注的(@Model.FollowCount)     </a></li>
+        }
+    </ul>
+
+    @if (ViewBag.AlbumType == 1)
+    {
+        <div style="margin-top:10px;">
+            <a class="btn btn-primary" href="/Album/Create/" title="新建专辑" target="_self">新建专辑</a>
+        </div>
+    }
+    @if (Model.Albums.Count == 0)
+    {
+        if (ViewBag.AlbumType == 1)
+        {
+            <div class="text-center" style="margin-top:15px;">你还没有创建过任何专辑(＃￣▽￣＃)</div>
+        }
+        else
+        {
+            <div class="text-center" style="margin-top:15px;">你还没有关注过任何专辑(＃￣▽￣＃)</div>
+        }
+    }
+    else
+    {
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>
+                        专辑名
+                    </th>
+                    <th>
+                        更新时间
+                    </th>
+                    <th>
+                        创建者
+                    </th>
+                    <th>
+                        #
+                    </th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var item in Model.Albums)
+                {
+                    <tr>
+                        <td>
+                            <a class="link-text" title="@item.Title" href="/Album/Detail?id=@item.Id" target="_self">@item.Title</a>
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.AlterTime)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.UserAccount)
+                        </td>
+                        <td>
+                            @if (ViewBag.AlbumType == 1)
+                            {
+                                <a class="btn btn-mark-xs" title="移除" href="/Album/Delete?id=@item.Id&returnurl=@Request.Url"><span class="fa fa-trash-o"></span></a>
+                            }
+                            @if (ViewBag.AlbumType == 2)
+                            {
+                                <a class="btn btn-mark-xs" title="取消关注" href="/Mark/Cancel?target=@item.Id&type=7&returnurl=@Request.Url"><span class="fa fa-trash-o"></span></a>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>

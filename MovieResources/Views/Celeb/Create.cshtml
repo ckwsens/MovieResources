@@ -1,0 +1,30 @@
+﻿@model MovieResources.Models.CreateCelebViewModel
+
+@{
+    ViewBag.Title = "添加影人";
+    ViewBag.PageType = 2;
+}
+
+<div class="panel panel-body text-center no-padding">
+    <h4>@ViewBag.Title</h4>
+</div>
+
+<div class="panel panel-body">
+    @Html.ActionLink(linkText: "添加无豆瓣编号的影人 >>", actionName: "CreateCeleb", routeValues: null, htmlAttributes: new { @class = "link-text" })
+</div>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div class="panel panel-default">
+        <div class="panel-body">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.EditorFor(model => model.DoubanID, new { htmlAttributes = new { @class = "form-control", placeholder = "请填写影人的豆瓣编号,多个编号请用回车换行...", style = "min-height:144px;" } })
+            @Html.ValidationMessageFor(model => model.DoubanID, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="panel-footer">
+            <input type="submit" value="确认新建" class="btn btn-primary btn-block" />
+        </div>
+    </div>
+}

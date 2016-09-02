@@ -1,0 +1,43 @@
+﻿@model List<MovieResources.Models.AlbumListItem>
+
+@{
+    ViewBag.Title = "专辑";
+    ViewBag.PageType = 2;
+    ViewBag.NavType = 4;
+}
+
+<div class="panel panel-body text-center no-padding">
+    <h4>专辑</h4>
+</div>
+
+<div class="panel panel-body" style="padding:10px;">
+    @foreach (var item in Model)
+    {
+        <div class="col-sm-3" style="padding:10px;">
+            <div class="album panel-float">
+
+                <div class="album-avatar">
+                    <a href="/Album/Detail?id=@item.Id" title="@item.Title" target="_self"><img src="~/Content/Album/@item.Cover" /></a>
+                </div>
+
+                <div class="album-info">
+                    <a class="link-no-line text-overflow" href="/Album/Detail?id=@item.Id" target="_self" title="@item.Title">@item.Title</a>
+                    <small>@item.Summary</small>
+                </div>
+
+                <div class="album-bottom">
+                    <i class="fa fa-eye"></i><span> &nbsp;@item.VisitCount</span>
+                    <i class="fa fa-heart"></i><span> &nbsp;@item.FollowCount</span>
+                    @if (!string.IsNullOrEmpty(item.UserId))
+                    {
+                        <div class="album-user">
+                            <a href="/People/Index?id=@item.UserId" data-toggle="tooltip" data-placement="top" title="@item.UserAccount" target="_self">
+                                <i class="fa fa-user"></i>
+                            </a>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+</div>

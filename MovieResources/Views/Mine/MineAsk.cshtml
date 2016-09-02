@@ -1,0 +1,75 @@
+﻿@model MovieResources.Models.MineAskViewModel
+
+@{
+    Layout = "~/Views/Mine/_LayoutPage.cshtml";
+    ViewBag.Avatar = Model.Avatar;
+    ViewBag.Account = Model.Account;
+    ViewBag.Title = "我的求资源(" + Model.AskCount + ")";
+}
+
+<div class="panel panel-body">
+    <ul class="nav nav-tabs">
+        <li class=""><a href="/Mine/MineRes/">我上传的资源(@Model.ResCount)     </a></li>
+        <li class="active"><a href="/Mine/MineAsk/">我的求资源(@Model.AskCount)     </a></li>
+    </ul>
+    @if (Model.Asks.Count == 0)
+    {
+        <div class="text-center" style="margin-top:15px;">你还没有求过资源(＃￣▽￣＃)</div>
+    }
+    else
+    {
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>
+                        电影
+                    </th>
+                    <th>
+                        备注
+                    </th>
+                    <th>
+                        日期
+                    </th>
+                    <th>
+                        同求
+                    </th>
+                    <th>
+                        状态
+                    </th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var item in Model.Asks)
+                {
+                    <tr>
+                        <td>
+                            @Html.RouteLink(linkText: @item.Movie.Title, routeName: "Default", routeValues: new { controller = "Movie", action = "Index", id = @item.Movie.Id }, htmlAttributes: new { @class = "link-text", target = "_self" })
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Note)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Time)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.With)
+                        </td>
+                        <td>
+                            @if (item.State)
+                            {
+                                <label class="label label-success">已求到</label>
+                                <a class="btn btn-mark-xs" title="取消" href="/Ask/Delete?id=@item.Id&returnurl=@Request.Url"><span class="fa fa-trash-o"></span></a>
+                            }
+                            else
+                            {
+                                <a class="btn btn-mark-xs" title="点击设置已求到" href="/Ask/Over?id=@item.Id&returnUrl=@Request.Url">未求到</a>
+                                <a class="btn btn-mark-xs" title="取消" href="/Ask/Delete?id=@item.Id&returnurl=@Request.Url"><span class="fa fa-trash-o"></span></a>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>

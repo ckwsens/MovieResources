@@ -1,0 +1,38 @@
+﻿@{
+    Layout = "~/Views/Shared/_LayoutWide.cshtml";
+    ViewBag.Title = "无权限，访问受限";
+    ViewBag.PageType = 2;
+}
+<div class="container text-center" style="margin-top:20px; margin-bottom:20px;">
+    <img src="~/Content/Error/NoPermission.png" style="height:398px;" />
+</div>
+<div class="text-center" style="font-family:'Microsoft YaHei'; font-size:27px; font-weight:700;">
+    <p>
+        对不起 >_<
+    </p>
+    <p>
+        您暂无<span style="color:orangered;">访问权限</span>...
+    </p>
+</div>
+
+<div class="text-center" style="margin-bottom:50px;">
+    <span style="color:#888888;">系统将在 </span>
+    <span id="count_down">10</span>
+    <span style="color:#888888;"> 秒钟后回到首页，如果未能跳转，</span>
+    <a class="link-text" href="/Home" title="回到首页">请点击</a>。
+</div>
+
+<script type="text/javascript">
+    delayURL();
+    function delayURL() {
+        var delay = document.getElementById("count_down").innerHTML;
+        var t = setTimeout("delayURL()", 1000);
+        if (delay > 0) {
+            delay--;
+            document.getElementById("count_down").innerHTML = delay;
+        } else {
+            clearTimeout(t);
+            window.location.href = "/Home";
+        }
+    }
+</script>

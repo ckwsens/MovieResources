@@ -1,0 +1,128 @@
+﻿@model MovieResources.Models.ManageCelebViewModel
+
+@{
+    ViewBag.Title = "添加无豆瓣编号的影人";
+    ViewBag.PageType = 2;
+}
+
+<div class="panel panel-body text-center no-padding">
+    <h4>@ViewBag.Title</h4>
+</div>
+
+@using (Html.BeginForm("CreateCeleb", "Celeb", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="panel panel-default">
+        <div class="panel-body form-horizontal">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="form-group col-sm-6">
+                @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-3" })
+                <div class="col-md-9">
+                    @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control col-md-", placeholder = "请填写中文名" } })
+                    @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group col-sm-6">
+                @Html.LabelFor(model => model.Aka, htmlAttributes: new { @class = "control-label col-md-3" })
+                <div class="col-md-9">
+                    @Html.EditorFor(model => model.Aka, new { htmlAttributes = new { @class = "form-control", placeholder = "请填写其他中文名" } })
+                    @Html.ValidationMessageFor(model => model.Aka, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group col-sm-6">
+                @Html.LabelFor(model => model.NameEn, htmlAttributes: new { @class = "control-label col-md-3" })
+                <div class="col-md-9">
+                    @Html.EditorFor(model => model.NameEn, new { htmlAttributes = new { @class = "form-control", placeholder = "请填写外文名" } })
+                    @Html.ValidationMessageFor(model => model.NameEn, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group col-sm-6">
+                @Html.LabelFor(model => model.AkaEn, htmlAttributes: new { @class = "control-label col-md-3" })
+                <div class="col-md-9">
+                    @Html.EditorFor(model => model.AkaEn, new { htmlAttributes = new { @class = "form-control", placeholder = "请填写其他外文名" } })
+                    @Html.ValidationMessageFor(model => model.AkaEn, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group col-sm-6">
+                @Html.LabelFor(model => model.Gender, htmlAttributes: new { @class = "control-label col-md-3" })
+                <div class="col-md-9">
+                    @Html.EditorFor(model => model.Gender, new { htmlAttributes = new { @class = "form-control", placeholder = "请填写性别" } })
+                    @Html.ValidationMessageFor(model => model.Gender, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group col-sm-6">
+                @Html.LabelFor(model => model.BornPlace, htmlAttributes: new { @class = "control-label col-md-3" })
+                <div class="col-md-9">
+                    @Html.EditorFor(model => model.BornPlace, new { htmlAttributes = new { @class = "form-control", placeholder = "请填写出生地点" } })
+                    @Html.ValidationMessageFor(model => model.BornPlace, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group col-sm-6">
+                @Html.LabelFor(model => model.Birthday, htmlAttributes: new { @class = "control-label col-md-3" })
+                <div class="col-md-9">
+                    @Html.EditorFor(model => model.Birthday, new { htmlAttributes = new { @class = "form-control", placeholder = "如: 1970-05-06" } })
+                    @Html.ValidationMessageFor(model => model.Birthday, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group col-sm-6">
+                @Html.LabelFor(model => model.Deathday, htmlAttributes: new { @class = "control-label col-md-3" })
+                <div class="col-md-9">
+                    @Html.EditorFor(model => model.Deathday, new { htmlAttributes = new { @class = "form-control", placeholder = "如: 2016-02-20" } })
+                    @Html.ValidationMessageFor(model => model.Deathday, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group col-sm-6">
+                @Html.LabelFor(model => model.DoubanID, htmlAttributes: new { @class = "control-label col-md-3" })
+                <div class="col-md-9">
+                    @Html.EditorFor(model => model.DoubanID, new { htmlAttributes = new { @class = "form-control", placeholder = "如: 6097775" } })
+                    @Html.ValidationMessageFor(model => model.DoubanID, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group col-sm-6">
+                @Html.LabelFor(model => model.IMDbID, htmlAttributes: new { @class = "control-label col-md-3" })
+                <div class="col-md-9">
+                    @Html.EditorFor(model => model.IMDbID, new { htmlAttributes = new { @class = "form-control", placeholder = "如: nm1443336" } })
+                    @Html.ValidationMessageFor(model => model.IMDbID, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group col-sm-6">
+                @Html.LabelFor(model => model.Pro, htmlAttributes: new { @class = "control-label col-md-3" })
+                <div class="col-md-9">
+                    @Html.EditorFor(model => model.Pro, new { htmlAttributes = new { @class = "form-control", placeholder = "如: 演员/导演" } })
+                    @Html.ValidationMessageFor(model => model.Pro, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group col-sm-6">
+                @Html.LabelFor(model => model.Avatar, htmlAttributes: new { @class = "control-label col-md-3" })
+                <div class="col-md-9">
+                    <input type="file" name="file" class="form-control" placeholder="请选择图片" />
+                    @Html.ValidationMessageFor(model => model.Avatar, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group col-sm-6">
+                @Html.LabelFor(model => model.Summary, htmlAttributes: new { @class = "control-label col-md-3" })
+                <div class="col-md-9">
+                    @Html.EditorFor(model => model.Summary, new { htmlAttributes = new { @class = "form-control min-editor", placeholder = "请填写影人简介。。。" } })
+                    @Html.ValidationMessageFor(model => model.Summary, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+        <div class="panel-footer">
+            <input type="submit" value="确认新建" class="btn btn-primary btn-block" />
+        </div>
+    </div>
+}

@@ -1,0 +1,130 @@
+﻿@using System.Configuration;
+@using Microsoft.AspNet.Identity
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - @ConfigurationManager.AppSettings.Get("WebsiteName")</title>
+    @Styles.Render("~/Styles/css")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/modernizr")
+    <style>
+        #left {
+            position: fixed;
+            top: 51px;
+            bottom: 0px;
+            left: 0px;
+            padding: 15px 0px 0px 0px;
+        }
+
+        #right {
+            position: absolute;
+            top: 51px;
+            bottom: 0px;
+            right: 0px;
+            padding: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar navbar-default navbar-fixed-top">
+
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            @Html.ActionLink(@ConfigurationManager.AppSettings.Get("WebsiteName"), "Index", "Home", new { Area = "" }, new { @class = "navbar-brand", title = @ConfigurationManager.AppSettings.Get("WebsiteName") + " " + @ConfigurationManager.AppSettings.Get("WebsiteSubTitle"), style = "font-family:'Weston Free'; " })
+        </div>
+
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                @if (ViewBag.Page == 1)
+                {
+                    <li class="active">
+                        <a href="/Manage/Movie/" style="border-radius:0px;">电影管理</a>
+                    </li>
+                }
+                else
+                {
+                    <li>
+                        <a href="/Manage/Movie/" style="border-radius:0px;">电影管理</a>
+                    </li>
+                }
+                @if (ViewBag.Page == 2)
+                {
+                    <li class="active">
+                        <a href="/Manage/Celeb/" style="border-radius:0px;">影人管理</a>
+                    </li>
+                }
+                else
+                {
+                    <li>
+                        <a href="/Manage/Celeb/" style="border-radius:0px;">影人管理</a>
+                    </li>
+                }
+                @if (ViewBag.Page == 3)
+                {
+                    <li class="active">
+                        <a href="/Manage/Res/" style="border-radius:0px;">用户上传资源管理</a>
+                    </li>
+                }
+                else
+                {
+                    <li>
+                        <a href="/Manage/Res/" style="border-radius:0px;">用户上传资源管理</a>
+                    </li>
+                }
+                @if (ViewBag.Page == 4)
+                {
+                    <li class="active">
+                        <a href="/Manage/Album/" style="border-radius:0px;">专辑管理</a>
+                    </li>
+                }
+                else
+                {
+                    <li>
+                        <a href="/Manage/Album/" style="border-radius:0px;">专辑管理</a>
+                    </li>
+                }
+                @if (ViewBag.Page == 5)
+                {
+                    <li class="active">
+                        <a href="/Manage/Disc/" style="border-radius:0px;">每日发现管理</a>
+                    </li>
+                }
+                else
+                {
+                    <li>
+                        <a href="/Manage/Disc/" style="border-radius:0px;">每日发现管理</a>
+                    </li>
+                }
+                <li role="separator" class="divider"></li>
+            </ul>
+
+            @using (Html.BeginForm("LogOff", "Account", new { Area = "", returnUrl = Request.Url }, FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+            {
+                @Html.AntiForgeryToken()
+                <ul class="nav navbar-nav navbar-right" style="margin-right:20px;">
+                    <li>
+                        @Html.ActionLink(User.Identity.GetUserName(), "Index", "Movie", routeValues: null, htmlAttributes: null)
+                    </li>
+                    <li><a href="javascript:document.getElementById('logoutForm').submit()">注销</a></li>
+                </ul>
+            }
+        </div>
+    </div>
+    <div class="container">
+        <div class="panel">
+            <h4 style="top:auto;bottom:auto; text-align:center;margin:15px 0px;">@ViewBag.Title</h4>
+        </div>
+        @RenderBody()
+    </div>
+</body>
+</html>

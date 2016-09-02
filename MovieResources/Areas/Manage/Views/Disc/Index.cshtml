@@ -1,0 +1,51 @@
+﻿@model List<MovieResources.Models.ManageDiscViewModel>
+
+@{
+    ViewBag.Title = "每日发现";
+    Layout = "~/Areas/Manage/Views/Shared/_Layout.cshtml";
+    ViewBag.Page = 5;
+}
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        @Html.ActionLink(linkText: "添加每日发现", actionName: "Create", routeValues: null, htmlAttributes: new { @class = "btn btn-primary" })
+    </div>
+
+    <div class="panel-body">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>
+                        编号
+                    </th>
+                    <th>
+                        电影
+                    </th>
+                    <th>
+                        添加时间
+                    </th>
+                    <th>
+                        #
+                    </th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.Flag</td>
+                        <td>
+                            <a class="link-text" href="/Movie/Index?id=@item.Movie" title="@item.MovieTitle" target="_self">@item.MovieTitle</a>
+                        </td>
+                        <td>@item.Time</td>
+                        <td>
+                            <a class="btn btn-mark-xs" title="删除" href="/Manage/Disc/Delete?id=@item.Id"><span class="fa fa-trash"></span></a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+
+        </table>
+    </div>
+</div>

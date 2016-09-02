@@ -1,0 +1,38 @@
+﻿@model MovieResources.Models.RejectViewModel
+
+@{
+    ViewBag.Title = "拒绝";
+    Layout = "~/Areas/Manage/Views/Shared/_Layout.cshtml";
+    ViewBag.Page = 1;
+}
+
+@using (Html.BeginForm("Reject", "Movie", routeValues: new { returnurl = ViewBag.ReturnUrl }, method: FormMethod.Post, htmlAttributes: new { @class = "form-horizontal", role = "form" }))
+{
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <strong class="font-larger">请选择一个拒绝理由>></strong>
+        </div>
+        <div class="panel-body">
+            <div class="input-group">
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            </div>
+            @Html.HiddenFor(model => model.Id)
+            <div class="input-group">
+                @Html.RadioButtonFor(Model => Model.Note, 0, new { @id = "radio0", @name = "Reject", @title = "该电影信息有误", @checked = true })
+                @Html.Label("该电影信息有误", htmlAttributes: new { @for = "radio0" })
+            </div>
+            <div class="input-group">
+                @Html.RadioButtonFor(Model => Model.Note, 1, new { @id = "radio1", @name = "Reject", @title = "该电影已存在" })
+                @Html.Label("该电影已存在", htmlAttributes: new { @for = "radio1" })
+            </div>
+            <div class="input-group">
+                @Html.RadioButtonFor(Model => Model.Note, 2, new { @id = "radio2", @name = "Reject", @title = "其他" })
+                @Html.Label("其他", htmlAttributes: new { @for = "radio2" })
+            </div>
+        </div>
+        <div class="panel-footer">
+            <input type="submit" class="btn btn-primary btn-block" value="提交" />
+        </div>
+    </div>
+}

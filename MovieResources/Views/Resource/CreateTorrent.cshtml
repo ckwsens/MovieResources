@@ -1,0 +1,48 @@
+﻿@model MovieResources.Models.ManageResViewModel
+
+@{
+    ViewBag.Title = "为电影 " + Model.MovieTitle + " 添加资源";
+    ViewBag.PageType = 2;
+}
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <strong class="font-larger">@ViewBag.Title</strong>
+    </div>
+    <div class="panel-body" style="padding:30px 50px;">
+        @using (Html.BeginForm("CreateTorrent", "Resource", FormMethod.Post, new { role = "form", enctype = "multipart/form-data" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(model => model.MovieTitle)
+            @Html.HiddenFor(model => model.MovieId)
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+            <div class="center-block" style="margin-top:0px;">
+                @Html.Label("选择torrent文件", htmlAttributes: new { @class = "control-label" })
+                <input type="file" name="file" class="form-control" placeholder="请选择图片" onchange="loadImageFile()" id="inputImg" />
+                @Html.ValidationMessageFor(model => model.Content, "", new { @class = "text-danger", id = "valImg" })
+            </div>
+
+            <div class="center-block" style="margin-top:20px;">
+                @Html.LabelFor(model => model.FileName, htmlAttributes: new { @class = "control-label" })
+                @Html.EditorFor(model => model.FileName, new { htmlAttributes = new { @class = "form-control", placeholder = "请输入资源标题。。。" } })
+                @Html.ValidationMessageFor(model => model.FileName, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="center-block" style="margin-top:20px;">
+                @Html.LabelFor(model => model.FileSize, htmlAttributes: new { @class = "control-label" })
+                @Html.EditorFor(model => model.FileSize, new { htmlAttributes = new { @class = "form-control", placeholder = "请输入资源大小。。。单位byte" } })
+                @Html.ValidationMessageFor(model => model.FileSize, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="full-width" style="margin-top:20px;">
+                <input type="submit" value="确认添加" class="btn btn-primary" />
+                <a title="取消" href="/Movie/Index?id=@Model.MovieId" class="btn btn-default">取消</a>
+            </div>
+        }
+    </div>
+    <div class="panel-footer">
+        <span>点此<a href="/Resource/Create?id=@Model.MovieId" class="link-text">上传资源链接</a></span>
+    </div>
+</div>
+

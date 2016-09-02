@@ -1,0 +1,38 @@
+﻿@model MovieResources.Models.ManageDiscViewModel
+
+@{
+    ViewBag.Title = "新建每日发现";
+    Layout = "~/Areas/Manage/Views/Shared/_Layout.cshtml";
+    ViewBag.Page = 5;
+}
+
+@using (Html.BeginForm("Create", "Disc", FormMethod.Post, new { role = "form", enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="panel panel-default">
+        <div class="panel-body">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="form-group col-sm-8 col-sm-offset-2 no-padding">
+                @Html.LabelFor(model => model.Movie, htmlAttributes: new { @class = "control-label" })
+                <div>
+                    @Html.EditorFor(model => model.Movie, new { htmlAttributes = new { @class = "form-control", placeholder = "请填写 电影编号" } })
+                    @Html.ValidationMessageFor(model => model.Movie, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group col-sm-8 col-sm-offset-2 no-padding">
+                @Html.LabelFor(model => model.Image, htmlAttributes: new { @class = "control-label" })
+                <div>
+                    <input type="file" name="file" class="form-control" placeholder="请选择图片" />
+                    @Html.ValidationMessageFor(model => model.Image, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+        <div class="panel-footer">
+            <input type="submit" value="确认新建" class="btn btn-primary col-sm-offset-2" />
+        </div>
+    </div>
+}
+
+@Html.ActionLink(linkText: "返回列表", actionName: "Index", routeValues: null, htmlAttributes: new { @class = "link-text" })

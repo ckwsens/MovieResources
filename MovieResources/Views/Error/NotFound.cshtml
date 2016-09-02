@@ -1,0 +1,23 @@
+﻿@{
+    Layout = "~/Views/Shared/_LayoutWide.cshtml";
+    ViewBag.Title = "404 Not Found";
+    ViewBag.PageType = 2;
+}
+<div class="container text-center" style="margin-top:50px;margin-bottom:20px;">
+    <img src="~/Content/Error/404.png" style="width:640px;"/>
+</div>
+<div class="text-center" style="font-family:'Microsoft YaHei'; font-size:27px; font-weight:700;">
+    <p>
+        很抱歉 >_<
+    </p>
+    <p>
+        您访问的页面<span style="color:orangered;">失联</span>啦...
+    </p>
+</div>
+
+<div class="text-center" style="margin-bottom:50px;">
+    <span style="color:#888888;">可能网页地址输入错了，请再核对下吧。或者：</span>
+    <a class="link-text" href="javaScript: history.back();">回到上一页</a>
+    <span style="color:#888888;">  |  </span>
+    <a class="link-text" href="/Home/">回到首页</a>
+</div>

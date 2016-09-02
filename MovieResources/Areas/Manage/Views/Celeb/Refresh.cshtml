@@ -1,0 +1,173 @@
+﻿@model MovieResources.Models.RefreshCelebViewModel
+
+@{
+    ViewBag.Title = "更新影人 " + Model.Old.Name;
+    Layout = "~/Areas/Manage/Views/Shared/_Layout.cshtml";
+    ViewBag.Page = 2;
+}
+
+<div class="panel panel-default">
+    <div class="panel-body">
+        <table class="table table-striped table-striped">
+            <thead>
+                <tr>
+                    <th>
+                        #
+                    </th>
+                    <th>
+                        旧的
+                    </th>
+                    <th>
+                        新的
+                    </th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(m => m.Old.Name)
+                    </th>
+                    <td>
+                        @Html.DisplayFor(m => m.Old.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(m => m.New.Name)
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(m => m.Old.NameEn)
+                    </th>
+                    <td>
+                        @Html.DisplayFor(m => m.Old.NameEn)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(m => m.New.NameEn)
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(m => m.Old.Aka)
+                    </th>
+                    <td>
+                        @Html.DisplayFor(m => m.Old.Aka)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(m => m.New.Aka)
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(m => m.Old.AkaEn)
+                    </th>
+                    <td>
+                        @Html.DisplayFor(m => m.Old.AkaEn)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(m => m.New.AkaEn)
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(m => m.Old.Gender)
+                    </th>
+                    <td>
+                        @Html.DisplayFor(m => m.Old.Gender)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(m => m.New.Gender)
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(m => m.Old.Birthday)
+                    </th>
+                    <td>
+                        @Html.DisplayFor(m => m.Old.Birthday)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(m => m.New.Birthday)
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(m => m.Old.Deathday)
+                    </th>
+                    <td>
+                        @Html.DisplayFor(m => m.Old.Deathday)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(m => m.New.Deathday)
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(m => m.Old.Family)
+                    </th>
+                    <td>
+                        @Html.DisplayFor(m => m.Old.Family)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(m => m.New.Family)
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(m => m.Old.DoubanID)
+                    </th>
+                    <td>
+                        @Html.DisplayFor(m => m.Old.DoubanID)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(m => m.New.DoubanID)
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(m => m.Old.IMDbID)
+                    </th>
+                    <td>
+                        @Html.DisplayFor(m => m.Old.IMDbID)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(m => m.New.IMDbID)
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(m => m.Old.Avatar)
+                    </th>
+                    <td>
+                        @Html.DisplayFor(m => m.Old.Avatar)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(m => m.New.Avatar)
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(m => m.Old.Summary)
+                    </th>
+                    <td>
+                        @Html.DisplayFor(m => m.Old.Summary)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(m => m.New.Summary)
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="panel-footer">
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+            <div class="form-actions no-color">
+                <input type="submit" value="确认更新" class="btn btn-primary btn-block" />
+            </div>
+        }
+    </div>
+</div>
+
+@Html.ActionLink(linkText: "返回列表", actionName: "Index", routeValues: null, htmlAttributes: new { @class = "link-text" })

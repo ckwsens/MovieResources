@@ -1,0 +1,108 @@
+﻿@model MovieResources.Models.IndexAskViewModel
+
+@{
+    ViewBag.Title = "求资源";
+    ViewBag.PageType = 2;
+    ViewBag.NavType = 3;
+}
+
+<style>
+    .div-ask {
+        height: 128px;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        padding-left: 10px;
+        padding-right: 10px;
+        border-top: 1px solid #CCCCCC;
+        -webkit-transition: background 0.6s ease;
+        -o-transition: background 0.6s ease;
+        -moz-transition: background 0.6s ease;
+        transition: background 0.6s ease;
+    }
+
+        .div-ask:hover {
+            background-color: #EEEEEE;
+        }
+</style>
+
+<div class="col-sm-8 bg-white" style="padding:10px;">
+    @foreach (var item in Model.All)
+    {
+        <div class="div-ask" style="position:relative;">
+            <div class="full-height pull-left">
+                <a class="full-height" href="/Movie/Index?id=@item.MovieId" target="_self">
+                    <img src="~/Content/Movie/@item.Movie.Avatar" title="@item.Movie.Title" class="img-responsive full-height" />
+                </a>
+            </div>
+            <div style="position:absolute; left:95px; top:5px;">
+                <div>
+                    <a href="/Movie/Index?id=@item.MovieId" class="font-larger" target="_self">
+                        <strong title="@item.Movie.Title">@item.Movie.Title</strong>
+                    </a>
+                    <span class="label label-info font-small" style="margin-left:10px; padding:0px 3px;">@item.Movie.Year</span>
+                    @if (item.State)
+                    {
+                        <label class="label label-success" style="margin-left:10px;">已求到</label>
+                    }
+                    else
+                    {
+                        <label class="label label-default" style="margin-left:10px;">未求到</label>
+                    }
+                </div>
+                <div style="color:#AAAAAA;">
+                    <span class="fa fa-user"></span>
+                    <span>
+                        <a href="/People/Index?id=@item.User&returnurl=@Request.Url" class="link-text" target="_self" title="@item.Account 的主页">@item.Account</a>
+                    </span>
+                </div>
+                <div style="color:#AAAAAA;">
+                    <span class="fa fa-clock-o"></span>
+                    <span>@item.Time</span>
+                </div>
+                <div>
+                    <span class="fa fa-sticky-note-o"></span>
+                    <span>@item.Note</span>
+                </div>
+            </div>
+
+            <div style="position:absolute; right:15px; top:5px;">
+                <label class="label label-danger" style="margin-right:10px;">@item.With 同求</label>
+                @if (!item.hadWith)
+                {
+                    <a class="btn btn-default btn-mark-xs tipup" href="/Mark/Create?target=@item.Id&type=6&returnUrl=@Request.Url" title="同求" data-toggle="tooltip" data-placement="top"><i class="fa fa-send-o" aria-hidden="true"></i></a>
+                }
+                else
+                {
+                    <a class="btn btn-default btn-mark-xs disabled tipup" href="javascript: void(0);" title="同求" data-toggle="tooltip" data-placement="top"><i class="fa fa-send-o" aria-hidden="true"></i></a>
+                }
+            </div>
+        </div>
+    }
+</div>
+
+<div class="col-sm-4 div-right">
+    <p class="text-capitalize">凡是发到本栏目的资源需求，我们都会尽量去寻找，希望大家都能找到自己喜欢的电影。</p>
+    <p class="text-capitalize">要为电影求资源，请转到该电影详细信息页面找到'<i class="fa fa-commenting-o"></i>'按钮并点击</p>
+    <hr />
+
+    <b class="font-larger">被求最多</b>
+    <ul class="list-link" style="margin-top:10px;">
+        @foreach (var item in Model.Most)
+        {
+            <li>
+                <a href="/Movie/Index?id=@item.Movie.Id" class="link-list-item" target="_self">@item.Movie.Title @item.Movie.TitleEn （@item.Movie.Year）</a> <span class="badge">@item.With</span>
+            </li>
+        }
+    </ul>
+    <hr />
+
+    <b class="font-larger">已求到</b>
+    <ul class="list-link" style="margin-top:10px;">
+        @foreach (var item in Model.Over)
+        {
+            <li>
+                <a href="/Movie/Index?id=@item.Movie.Id" class="link-list-item" target="_self">@item.Movie.Title @item.Movie.TitleEn （@item.Movie.Year）</a> <span class="badge">@item.With</span>
+            </li>
+        }
+    </ul>
+</div>

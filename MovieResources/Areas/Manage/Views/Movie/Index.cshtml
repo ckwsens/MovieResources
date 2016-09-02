@@ -1,0 +1,81 @@
+﻿@model List<MovieResources.Models.ManageMovieViewModel>
+
+@{
+    ViewBag.Title = "所有电影";
+    Layout = "~/Areas/Manage/Views/Shared/_Layout.cshtml";
+    ViewBag.Page = 1;
+}
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        @using (Html.BeginForm("Index", "Movie", FormMethod.Get, new { @class = "form-inline", role = "form" }))
+        {
+            <div class="input-group">
+                <span class="input-group-addon">
+                    <i class="fa fa-search"></i>
+                </span>
+                @Html.TextBox("search", null, new { @class = "form-control", role = "input", placeholder = "请输入关键字" })
+            </div>
+            @Html.ActionLink(linkText: "添加新影片", actionName: "Create", routeValues: null, htmlAttributes: new { @class = "btn btn-primary" })
+        }
+    </div>
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="/Manage/Movie/Index/">所有     </a></li>
+        <li class=""><a href="/Manage/Movie/IndexAudit/">用户上传     </a></li>
+    </ul>
+    <div class="panel-body">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>
+                        电影名
+                    </th>
+                    <th>
+                        年份
+                    </th>
+                    <th>
+                        导演
+                    </th>
+                    <th>
+                        类型
+                    </th>
+                    <th>
+                        评分
+                    </th>
+                    <th>
+                        #
+                    </th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.RouteLink(linkText: @item.Title, routeName: "Default", routeValues: new { controller = "Movie", action = "Index", id = @item.Id }, htmlAttributes: new { @class = "link-text", target = "_self" })
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Year)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Directors)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Genres)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Rating)
+                        </td>
+                        <td>
+                            <a class="btn btn-mark-xs" title="更新此电影" href="/Manage/Movie/Refresh?id=@item.Id"><span class="fa fa-refresh"></span></a>
+                            <a class="btn btn-mark-xs" title="编辑此电影" href="/Manage/Movie/Edit?id=@item.Id"><span class="fa fa-edit"></span></a>
+                            <a class="btn btn-mark-xs" title="删除此电影" href="/Manage/Movie/Delete?id=@item.Id"><span class="fa fa-trash"></span></a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+

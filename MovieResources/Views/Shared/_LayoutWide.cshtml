@@ -1,0 +1,174 @@
+﻿@using System.Configuration;
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - @ConfigurationManager.AppSettings.Get("WebsiteName")</title>
+    @Styles.Render("~/Styles/css")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script>
+        $(function () {
+            $(".tipup").tooltip();
+        });
+    </script>
+    <style>
+        .link-sub {
+            padding: 0px;
+            color: #FAFAFA;
+            margin-left: 8px;
+            margin-right: 8px;
+        }
+
+            .link-sub:hover,
+            .link-sub:focus,
+            .link-sub:active {
+                color: #E6E6E6;
+                text-decoration: none;
+            }
+
+        .span-search {
+            border-width: 0px;
+            background-color: #FFFFFF;
+            border-radius: 0px;
+        }
+
+        .input-search {
+            border-width: 0px;
+            border-radius: 0px;
+        }
+
+            .input-search:focus,
+            .input-search:active {
+                -webkit-box-shadow: 0 0 16px #10761A;
+                -moz-box-shadow: 0 0 16px #10761A;
+                box-shadow: 0 0 16px #10761A;
+            }
+
+        .btn-search {
+            border-width: 0px;
+            border-radius: 0px;
+        }
+
+            .btn-search:hover {
+                color: #10761A;
+            }
+    </style>
+</head>
+<body>
+    <div class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink(@ConfigurationManager.AppSettings.Get("WebsiteName"), "Index", "Home", new { Area = "" }, new { @class = "navbar-brand", title = @ConfigurationManager.AppSettings.Get("WebsiteName") + " " + @ConfigurationManager.AppSettings.Get("WebsiteSubTitle"), style = "font-family:'Weston Free'; " })
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    @if (ViewBag.NavType == 1)
+                    {
+                        <li class="active">@Html.ActionLink("首页", "Index", "Home")</li>
+                    }
+                    else
+                    {
+                        <li>@Html.ActionLink("首页", "Index", "Home")</li>
+                    }
+                    @if (ViewBag.NavType == 2)
+                    {
+                        <li class="active">@Html.ActionLink("选电影", "Index", "Search")</li>
+                    }
+                    else
+                    {
+                        <li>@Html.ActionLink("选电影", "Index", "Search")</li>
+                    }
+                    @if (ViewBag.NavType == 3)
+                    {
+                        <li class="active">@Html.ActionLink("求资源", "Index", "Ask")</li>
+                    }
+                    else
+                    {
+                        <li>@Html.ActionLink("求资源", "Index", "Ask")</li>
+                    }
+                    @if (ViewBag.NavType == 4)
+                    {
+                        <li class="active">@Html.ActionLink("专辑", "Index", "Album")</li>
+                    }
+                    else
+                    {
+                        <li>@Html.ActionLink("专辑", "Index", "Album")</li>
+                    }
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        if (ViewBag.NavType == 5)
+                        {
+                            <li class="active">@Html.ActionLink("我的主页", "Index", "Mine")</li>
+                        }
+                        else
+                        {
+                            <li>@Html.ActionLink("我的主页", "Index", "Mine")</li>
+                        }
+                    }
+                    <li role="separator" class="divider"></li>
+                </ul>
+                @Html.Partial("_LoginPartial")
+            </div>
+        </div>
+    </div>
+
+    @if (ViewBag.PageType == 1)//首页
+    {
+        <div style="background-color:#3B9047; padding:5px; margin-bottom:20px;" class="hidden-xs">
+            <div class="container">
+                <div class="row no-margin no-padding">
+                    <a class="link-sub">热门分类：</a>
+                    <a class="link-sub" href="/Search/Index?country=10" target="_self">大陆</a>
+                    <a class="link-sub" href="/Search/Index?country=11" target="_self">香港</a>
+                    <a class="link-sub" href="/Search/Index?country=12" target="_self">美国</a>
+                    <a class="link-sub" href="/Search/Index?country=14" target="_self">日本</a>
+                    <a class="link-sub" href="/Search/Index?genre=14" target="_self">动作</a>
+                    <a class="link-sub" href="/Search/Index?genre=12" target="_self">喜剧</a>
+                    <a class="link-sub" href="/Search/Index?genre=15" target="_self">科幻</a>
+                    <a class="link-sub" href="/Search/Index?genre=22" target="_self">悬疑</a>
+                    <a class="link-sub" href="/Search/Index?genre=13" target="_self">爱情</a>
+                </div>
+            </div>
+        </div>
+    }
+    else if (ViewBag.PageType == 2)//一般页面
+    {
+        <div style="background-color:#3B9047; padding:10px 0px; margin-bottom:20px;">
+            @using (Html.BeginForm("Index", "Search", FormMethod.Post, new { @class = "form-horizontal container", role = "form", id = "searchForm" }))
+            {
+                <div class="input-group col-sm-6 col-sm-offset-3 col-xs-8 col-xs-offset-2">
+                    <input type="search" class="form-control input-search" placeholder="搜索 电影" name="search" />
+                    <span class="input-group-btn span-search">
+                        <a title="搜索" class="btn btn-default btn-search" href="javascript:document.getElementById('searchForm').submit()">
+                            <i class="fa fa-search"></i>
+                        </a>
+                    </span>
+                </div>
+            }
+        </div>
+    }
+
+    @RenderBody()
+
+    <footer class="site-footer bg-doubangreen" role="contentinfo">
+        <div style="height:27px; background-color:#DCDCDC;"></div>
+        <div class="site-info" style="padding:40px 0px 30px 0px; margin:0px;">
+            <p style="text-align:center; color:#F2F2F2;">&copy; @DateTime.Now.Year &nbsp;&nbsp;&nbsp;&nbsp;<a href="/Home/Index" style="font-family:'Weston Free'; color:inherit; text-decoration:underline;" title="@ConfigurationManager.AppSettings.Get("WebsiteName") @ConfigurationManager.AppSettings.Get("WebsiteSubTitle")">@ConfigurationManager.AppSettings.Get("WebsiteName")</a> - @ConfigurationManager.AppSettings.Get("WebsiteSubTitle")</p>
+        </div>
+    </footer>
+
+    @RenderSection("scripts", required: false)
+</body>
+</html>

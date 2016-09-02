@@ -1,0 +1,132 @@
+﻿@model MovieResources.Models.FilterResViewModel
+
+@{
+    ViewBag.Title = "用户上传的资源";
+    Layout = "~/Areas/Manage/Views/Shared/_Layout.cshtml";
+    ViewBag.Page = 3;
+}
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        @using (Html.BeginForm("Index", "Res", FormMethod.Get, new { @class = "form-inline", role = "form", id = "searchForm" }))
+        {
+            <div class="input-group">
+                <span class="input-group-addon">
+                    <i class="fa fa-search"></i>
+                </span>
+                @Html.TextBox("search", null, new { @class = "form-control", role = "input", placeholder = "请输入关键字", value = Model.Search })
+            </div>
+        }
+    </div>
+    <div class="panel-body">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>
+                        来源
+                    </th>
+                    <th>
+                        类型
+                    </th>
+                    <th>
+                        资源
+                    </th>
+                    <th>
+                        电影名
+                    </th>
+                    <th>
+                        大小
+                    </th>
+                    <th>
+                        审核状态
+                    </th>
+                    <th>
+                        审核备注
+                    </th>
+                    <th>
+                        #
+                    </th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var item in Model.Ress)
+                {
+                    <tr>
+                        @if (item.User != null)
+                        {
+                            <td>@item.Account</td>
+                        }
+                        else
+                        {
+                            <td></td>
+                        }
+                        @if (item.ResType == 0)
+                        {
+                            <td>
+                                <span class="fa fa-link" title="电驴链接"></span>
+                            </td>
+                            <td>
+                                <a title="下载" href="@item.Content">@item.FileName</a>
+                            </td>
+                        }
+                        else if (item.ResType == 1)
+                        {
+                            <td>
+                                <span class="fa fa-magnet" title="磁力链"></span>
+                            </td>
+                            <td>
+                                <a title="下载" href="@item.Content">@item.FileName</a>
+                            </td>
+                        }
+                        else
+                        {
+                            <td>
+                                <span class="fa fa-file-movie-o" title="bt种子"></span>
+                            </td>
+                            <td>
+                                <a title="下载" href="/Movie/DownTorrent?filename=@item.Content">@item.FileName</a>
+                            </td>
+                        }
+                        <td>
+                            <a title="@item.MovieTitle" href="/Movie/Index?id=@item.Movie" class="link-text" target="_self">@item.MovieTitle</a>
+                        </td>
+                        <td>@item.FileSize</td>
+                        @if (item.Status == 2)
+                        {
+
+                            <td>
+                                <label class="label label-success">已通过</label>
+                            </td>
+                        }
+                        else if (item.Status == 1)
+                        {
+                            <td>
+                                <label class="label label-warning">未通过</label>
+                            </td>
+                        }
+                        else
+                        {
+                            <td>
+                                <label class="label label-danger">待处理</label>
+                            </td>
+                        }
+                        <td>@item.Note</td>
+                        @if (item.Status == 0)
+                        {
+                            <td>
+                                <a class="btn btn-mark-xs" title="通过" href="/Manage/Res/Audit?id=@item.Id"><span class="fa fa-plus"></span></a>
+                                <a class="btn btn-mark-xs" title="拒绝" href="/Manage/Res/Reject?id=@item.Id"><span class="fa fa-minus"></span></a>
+                            </td>
+                        }
+                        else
+                        {
+                            <td></td>
+                        }
+                    </tr>
+                }
+            </tbody>
+
+        </table>
+    </div>
+</div>

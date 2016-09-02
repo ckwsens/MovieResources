@@ -1,0 +1,112 @@
+﻿@model MovieResources.Models.MineResViewModel
+
+@{
+    Layout = "~/Views/Mine/_LayoutPage.cshtml";
+    ViewBag.Avatar = Model.Avatar;
+    ViewBag.Account = Model.Account;
+    ViewBag.Title = "我上传的资源(" + Model.ResCount + ")";
+}
+
+<div class="panel panel-body">
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="/Mine/MineRes/">我上传的资源(@Model.ResCount)     </a></li>
+        <li class=""><a href="/Mine/MineAsk/">我的求资源(@Model.AskCount)     </a></li>
+    </ul>
+    @if (Model.Ress.Count == 0)
+    {
+        <div class="text-center" style="margin-top:15px;">你还没有上传过资源(＃￣▽￣＃)</div>
+    }
+    else
+    {
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>
+                        类型
+                    </th>
+                    <th>
+                        标题
+                    </th>
+                    <th>
+                        大小
+                    </th>
+                    <th>
+                        电影
+                    </th>
+                    <th>
+                        审核状态
+                    </th>
+                    <th>
+                        备注
+                    </th>
+                    <th>
+                        #
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Ress)
+                {
+                    <tr>
+                        @if (item.ResType == 0)
+                    {
+                            <td>
+                                <span class="fa fa-link" title="电驴链接"></span>
+                            </td>
+                            <td>
+                                <a title="下载" href="@item.Content" class="link-text">@item.FileName</a>
+                            </td>
+                        }
+                        else if (item.ResType == 1)
+                        {
+                            <td>
+                                <span class="fa fa-magnet" title="磁力链"></span>
+                            </td>
+                            <td>
+                                <a title="下载" href="@item.Content" class="link-text">@item.FileName</a>
+                            </td>
+                        }
+                        else
+                        {
+                            <td>
+                                <span class="fa fa-file-movie-o" title="bt种子"></span>
+                            </td>
+                            <td>
+                                <a title="下载" href="/Movie/DownTorrent?filename=@item.Content" class="link-text" target="_self">@item.FileName</a>
+                            </td>
+                        }
+                        <td>
+                            @item.FileSize
+                        </td>
+                        <td>
+                            <a href="/Movie/Index?id=@item.Movie" class="link-text" title="@item.MovieTitle" target="_self">@item.MovieTitle</a>
+                        </td>
+                        @if (item.Status == 2)
+                    {
+
+                            <td>
+                                <label class="label label-success">已通过</label>
+                            </td>
+                        }
+                        else if (item.Status == 1)
+                        {
+                            <td>
+                                <label class="label label-warning">未通过</label>
+                            </td>
+                        }
+                        else
+                        {
+                            <td>
+                                <label class="label label-danger">待处理</label>
+                            </td>
+                        }
+                        <td>@item.Note</td>
+                        <td>
+                            <a class="btn btn-mark-xs" title="删除" href="/Resource/Delete?id=@item.Id&returnurl=@Request.Url"><span class="fa fa-trash-o"></span></a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>

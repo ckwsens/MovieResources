@@ -1,0 +1,56 @@
+﻿@model MovieResources.Models.RegisterViewModel
+
+@{
+    ViewBag.Title = "注册";
+    Layout = "~/Views/Account/_LayoutPage.cshtml";
+}
+
+@using (Html.BeginForm("Register", "Account", new { returnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="panel panel-body center-horizon panel-login" style="margin-top:20px; padding:30px 50px 20px 50px;">
+
+        <div class="text-center" style="margin:0px -50px;">
+            <text style="font-size:36px; color:#121212; font-weight:bold; font-family:'方正清刻本悦宋简体';">为爱电影的人</text>
+        </div>
+        <div class="text-center" style="margin:0px -50px;">
+            <text style="font-size:20px; color:#444444; font-weight:normal; font-family:'Microsoft JhengHei UI';">For people who love movies</text>
+        </div>
+
+        <div class="input-group" style="margin-top:30px;">
+            <span class="input-group-addon bg-white" style="border-radius:2px 0px 0px 2px;">
+                <i class="fa fa-user"></i>
+            </span>
+            @Html.TextBoxFor(m => m.Account, new { @class = "form-control", placeholder = "用户名", style = "border-radius:0px 2px 2px 0px ;" })
+        </div>
+        @Html.ValidationMessageFor(m => m.Account, "", new { @class = "text-danger" })
+
+        <div class="input-group" style="margin-top:20px;">
+            <span class="input-group-addon bg-white" style="border-radius:2px 0px 0px 2px;">
+                <i class="fa fa-lock"></i>
+            </span>
+            @Html.PasswordFor(m => m.Password, new { @class = "form-control", placeholder = "密码", style = "border-radius:0px 2px 2px 0px ;" })
+        </div>
+        @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+
+        <div class="input-group" style="margin-top:20px;">
+            <span class="input-group-addon bg-white" style="border-radius:2px 0px 0px 2px;">
+                <i class="fa fa-check-square-o"></i>
+            </span>
+            @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control", placeholder = "确认密码", style = "border-radius:0px 2px 2px 0px ;" })
+        </div>
+        @Html.ValidationMessageFor(m => m.ConfirmPassword, "", new { @class = "text-danger" })
+
+        <div class="input-group full-width" style="margin-top:20px;">
+            <input type="submit" value="注册" class="btn btn-primary btn-block" style="border-radius:2px;" />
+        </div>
+
+        <div class="input-group" style="margin-top:10px;">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        </div>
+    </div>
+}
+
+<div class="panel panel-body center-horizon panel-login font-larger">
+    已有账号？&nbsp;&nbsp;@Html.ActionLink(linkText: "点此登录. ", actionName: "Login", routeValues: null, htmlAttributes: new { @class = "link-text" })
+</div>

@@ -1,0 +1,151 @@
+﻿@model MovieResources.Models.ManageMovieViewModel
+
+@{
+    ViewBag.Title = "删除 " + Model.Title;
+    Layout = "~/Areas/Manage/Views/Shared/_Layout.cshtml";
+    ViewBag.Page = 1;
+}
+
+<div class="panel panel-default">
+    <div class="panel-body">
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.Title)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Title)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.TitleEn)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.TitleEn)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Aka)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Aka)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Directors)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Directors)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Writers)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Writers)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Casts)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Casts)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Year)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Year)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Pubdates)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Pubdates)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Genres)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Genres)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Durations)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Durations)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Countries)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Countries)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Languages)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Languages)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Rating)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Rating)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.RatingCount)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.RatingCount)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.DoubanID)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.DoubanID)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.IMDbID)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.IMDbID)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Avatar)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Avatar)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Summary)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Summary)
+            </dd>
+        </dl>
+
+    </div>
+    <div class="panel-footer">
+        @using (Html.BeginForm())
+            {
+            @Html.AntiForgeryToken()
+            <div class="form-actions no-color">
+                <input type="submit" value="确认删除" class="btn btn-primary btn-block" />
+            </div>
+        }
+    </div>
+</div>
+
+@Html.ActionLink(linkText: "返回列表", actionName: "Index", routeValues: null, htmlAttributes: new { @class = "link-text" })

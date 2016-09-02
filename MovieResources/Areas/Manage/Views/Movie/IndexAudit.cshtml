@@ -1,0 +1,111 @@
+﻿@model List<MovieResources.Models.ManageMovieViewModel>
+
+@{
+    ViewBag.Title = "用户上传的电影";
+    Layout = "~/Areas/Manage/Views/Shared/_Layout.cshtml";
+    ViewBag.Page = 1;
+}
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        @using (Html.BeginForm("IndexAudit", "Movie", FormMethod.Get, new { @class = "form-inline", role = "form" }))
+        {
+            <div class="input-group">
+                <span class="input-group-addon">
+                    <i class="fa fa-search"></i>
+                </span>
+                @Html.TextBox("search", null, new { @class = "form-control", role = "input", placeholder = "请输入关键字" })
+            </div>
+        }
+    </div>
+    <ul class="nav nav-tabs">
+        <li class=""><a href="/Manage/Movie/Index/">所有     </a></li>
+        <li class="active"><a href="/Manage/Movie/IndexAudit/">用户上传     </a></li>
+    </ul>
+    <div class="panel-body">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>
+                        电影名
+                    </th>
+                    <th>
+                        年份
+                    </th>
+                    <th>
+                        导演
+                    </th>
+                    <th>
+                        类型
+                    </th>
+                    <th>
+                        来源
+                    </th>
+                    <th>
+                        审核状态
+                    </th>
+                    <th>
+                        审核备注
+                    </th>
+                    <th>
+                        #
+                    </th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.RouteLink(linkText: @item.Title, routeName: "Default", routeValues: new { controller = "Movie", action = "Index", id = @item.Id }, htmlAttributes: new { @class = "link-text", target = "_self" })
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Year)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Directors)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Genres)
+                        </td>
+                        <td>
+                            <a class="link-text" href="/People/Index?id=@item.Create" target="_self">@Html.DisplayFor(modelItem => item.CreateAccount)</a>
+                        </td>
+                        @if (item.Status == 2)
+                        {
+
+                            <td>
+                                <label class="label label-success">已通过</label>
+                            </td>
+                        }
+                        else if (item.Status == 1)
+                        {
+                            <td>
+                                <label class="label label-warning">未通过</label>
+                            </td>
+                        }
+                        else
+                        {
+                            <td>
+                                <label class="label label-danger">待处理</label>
+                            </td>
+                        }
+                        <td>@item.Note</td>
+                        @if (item.Status == 0)
+                        {
+                            <td>
+                                <a class="btn btn-primary btn-xs btn-mark" title="通过" href="/Manage/Movie/Audit?id=@item.Id&returnurl=@Request.Url"><span class="fa fa-plus"></span></a>
+                                <a class="btn btn-primary btn-xs btn-mark" title="拒绝" href="/Manage/Movie/Reject?id=@item.Id&returnurl=@Request.Url"><span class="fa fa-minus"></span></a>
+                            </td>
+                        }
+                        else
+                        {
+                            <td></td>
+                        }
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

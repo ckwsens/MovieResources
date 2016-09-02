@@ -1,0 +1,151 @@
+﻿@model MovieResources.Models.MineCelebViewModel
+
+@{
+    Layout = "~/Views/Mine/_LayoutPage.cshtml";
+    ViewBag.Avatar = Model.Avatar;
+    ViewBag.Account = Model.Account;
+    if (ViewBag.CelebType == 1)
+    {
+        ViewBag.Title = "我收藏的影人(" + Model.CollectCount + ")";
+    }
+    else
+    {
+        ViewBag.Title = "我创建的影人(" + Model.CreateCount + ")";
+    }
+}
+
+<div class="panel panel-body">
+    <ul class="nav nav-tabs">
+        @if (ViewBag.CelebType == 1)
+        {
+            <li class="active"><a href="/Mine/MineCeleb?type=1">收藏的(@Model.CollectCount)     </a></li>
+        }
+        else
+        {
+            <li class=""><a href="/Mine/MineCeleb?type=1">收藏的(@Model.CollectCount)     </a></li>
+        }
+        @if (ViewBag.CelebType == 2)
+        {
+            <li class="active"><a href="/Mine/MineCeleb?type=2">创建的(@Model.CreateCount)     </a></li>
+        }
+        else
+        {
+            <li class=""><a href="/Mine/MineCeleb?type=2">创建的(@Model.CreateCount)     </a></li>
+        }
+    </ul>
+
+    @if (ViewBag.CelebType == 2)
+    {
+        <div style="margin-top:10px;">
+            <a class="btn btn-primary" href="/Celeb/Create/" title="新建影人" target="_self">新建影人</a>
+        </div>
+    }
+    @if (Model.Celebs.Count == 0)
+    {
+        if (ViewBag.CelebType == 1)
+        {
+            <div class="text-center" style="margin-top:15px;">没有收藏的影人(＃￣▽￣＃)</div>
+        }
+        else
+        {
+            <div class="text-center" style="margin-top:15px;">你还没有创建过影人(＃￣▽￣＃)</div>
+        }
+    }
+    else
+    {
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>
+                        中文名
+                    </th>
+                    <th>
+                        性别
+                    </th>
+                    <th>
+                        出生日期
+                    </th>
+                    <th>
+                        出生地
+                    </th>
+                    <th>
+                        职业
+                    </th>
+                    @if (ViewBag.CelebType == 2)
+                {
+                        <th>
+                            审核状态
+                        </th>
+                        <th>
+                            审核备注
+                        </th>
+                    }
+                    <th>
+                        #
+                    </th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var item in Model.Celebs)
+                {
+                    <tr>
+                        <td>
+                            @Html.RouteLink(linkText: @item.Name, routeName: "Default", routeValues: new { controller = "Celeb", action = "Index", id = @item.Id }, htmlAttributes: new { @class = "link-text", target = "_self" })
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Gender)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Birthday)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.BornPlace)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Pro)
+                        </td>
+                        @if (ViewBag.CelebType == 2)
+                    {
+                        if (item.Status == 2)
+                        {
+
+                                <td>
+                                    <label class="label label-success">已通过</label>
+                                </td>
+                            }
+                            else if (item.Status == 1)
+                            {
+                                <td>
+                                    <label class="label label-warning">未通过</label>
+                                </td>
+                            }
+                            else
+                            {
+                                <td>
+                                    <label class="label label-danger">待处理</label>
+                                </td>
+                            }
+                            <td>@item.Note</td>
+                        }
+                        <td>
+                            @if (ViewBag.CelebType == 1)
+                            {
+                                <a class="btn btn-mark-xs" title="移除" href="/Mark/Cancel?target=@item.Id&type=4&returnurl=@Request.Url"><span class="fa fa-trash-o"></span></a>
+                            }
+                            else
+                            {
+                                <a class="btn btn-mark-xs" title="修改" href="/Celeb/Edit?id=@item.Id"><span class="fa fa-edit"></span></a>
+                                if (!string.IsNullOrEmpty(item.DoubanID))
+                                {
+                                    <a class="btn btn-mark-xs" title="更新" href="/Celeb/Refresh?id=@item.Id"><span class="fa fa-refresh"></span></a>
+                                }
+                                <a class="btn btn-mark-xs" title="删除" href="/Celeb/Delete?id=@item.Id&returnurl=@Request.Url"><span class="fa fa-trash-o"></span></a>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>

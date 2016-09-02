@@ -1,0 +1,240 @@
+﻿@model MovieResources.Models.RefreshMovieViewModel
+
+@{
+    ViewBag.Title = "更新电影 " + Model.Old.Title;
+    ViewBag.PageType = 2;
+}
+
+<div class="panel panel-body text-center no-padding">
+    <h4>@ViewBag.Title</h4>
+</div>
+
+<div class="panel panel-default">
+    <div class="panel-body">
+        <table class="table table-striped table-striped">
+            <thead>
+                <tr>
+                    <th>
+                        #
+                    </th>
+                    <th>
+                        旧的
+                    </th>
+                    <th>
+                        新的
+                    </th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(m => m.Old.Title)
+                    </th>
+                    <td>
+                        @Html.DisplayFor(m => m.Old.Title)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(m => m.New.Title)
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(m => m.Old.TitleEn)
+                    </th>
+                    <td>
+                        @Html.DisplayFor(m => m.Old.TitleEn)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(m => m.New.TitleEn)
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(m => m.Old.Aka)
+                    </th>
+                    <td>
+                        @Html.DisplayFor(m => m.Old.Aka)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(m => m.New.Aka)
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(m => m.Old.Directors)
+                    </th>
+                    <td>
+                        @Html.DisplayFor(m => m.Old.Directors)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(m => m.New.Directors)
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(m => m.Old.Writers)
+                    </th>
+                    <td>
+                        @Html.DisplayFor(m => m.Old.Writers)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(m => m.New.Writers)
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(m => m.Old.Casts)
+                    </th>
+                    <td>
+                        @Html.DisplayFor(m => m.Old.Casts)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(m => m.New.Casts)
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(m => m.Old.Year)
+                    </th>
+                    <td>
+                        @Html.DisplayFor(m => m.Old.Year)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(m => m.New.Year)
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(m => m.Old.Pubdates)
+                    </th>
+                    <td>
+                        @Html.DisplayFor(m => m.Old.Pubdates)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(m => m.New.Pubdates)
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(m => m.Old.Genres)
+                    </th>
+                    <td>
+                        @Html.DisplayFor(m => m.Old.Genres)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(m => m.New.Genres)
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(m => m.Old.Durations)
+                    </th>
+                    <td>
+                        @Html.DisplayFor(m => m.Old.Durations)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(m => m.New.Durations)
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(m => m.Old.Countries)
+                    </th>
+                    <td>
+                        @Html.DisplayFor(m => m.Old.Countries)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(m => m.New.Countries)
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(m => m.Old.Languages)
+                    </th>
+                    <td>
+                        @Html.DisplayFor(m => m.Old.Languages)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(m => m.New.Languages)
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(m => m.Old.RatingCount)
+                    </th>
+                    <td>
+                        @Html.DisplayFor(m => m.Old.RatingCount)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(m => m.New.RatingCount)
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(m => m.Old.Rating)
+                    </th>
+                    <td>
+                        @Html.DisplayFor(m => m.Old.Rating)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(m => m.New.Rating)
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(m => m.Old.DoubanID)
+                    </th>
+                    <td>
+                        @Html.DisplayFor(m => m.Old.DoubanID)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(m => m.New.DoubanID)
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(m => m.Old.IMDbID)
+                    </th>
+                    <td>
+                        @Html.DisplayFor(m => m.Old.IMDbID)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(m => m.New.IMDbID)
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(m => m.Old.Avatar)
+                    </th>
+                    <td>
+                        @Html.DisplayFor(m => m.Old.Avatar)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(m => m.New.Avatar)
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(m => m.Old.Summary)
+                    </th>
+                    <td>
+                        @Html.DisplayFor(m => m.Old.Summary)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(m => m.New.Summary)
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="panel-footer">
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+            <div class="form-actions no-color">
+                <input type="submit" value="确认更新" class="btn btn-primary btn-block" />
+            </div>
+        }
+    </div>
+</div>

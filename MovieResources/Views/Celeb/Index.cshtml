@@ -1,0 +1,295 @@
+﻿@model MovieResources.Models.CelebViewModel
+
+@{
+    ViewBag.Title = Model.Name;
+    ViewBag.PageType = 2;
+}
+
+@Scripts.Render("~/bundles/smoothscroll")
+@*@Scripts.Render("~/bundles/backstrech")
+    <script>
+        $(document).ready(function () {
+            $.backstretch("../../Content/Account/CelebBack.png");
+        });
+    </script>*@
+<script>
+    $(document).ready(function () {
+        $("#link-to-details").smoothScroll();
+        $("#link-to-summary").smoothScroll();
+        $("#link-to-works").smoothScroll();
+    });
+
+    $(document).ready(function () {
+        $("#btnDisplay").click(function () {
+            $("#summaryshort").slideUp(500);
+            $("#summarylong").slideDown(500);
+        });
+        $("#btnHidden").click(function () {
+            $("#summaryshort").slideDown(500);
+            $("#summarylong").slideUp(500);
+        });
+    });
+
+    $(function () {
+        $("[rel=drevil]").popover({
+            trigger: 'manual',
+            //placement: 'bottom',
+            //title: '<div style="text-align:center; color:red; text-decoration:underline; font-size:14px;"> Muah ha ha</div>',
+            html: 'true',
+            //content: '<div id="popOverBox"><img src="http://www.hd-report.com/wp-content/uploads/2008/08/mr-evil.jpg" width="251" height="201" /></div>',
+            //animation: false
+        }).on("mouseenter", function () {
+            var _this = this;
+            $(this).popover("show");
+            $(this).siblings(".popover").on("mouseleave", function () {
+                $(_this).popover('hide');
+            });
+        }).on("mouseleave", function () {
+            var _this = this;
+            setTimeout(function () {
+                if (!$(".popover:hover").length) {
+                    $(_this).popover("hide")
+                }
+            }, 100);
+        });
+    });
+</script>
+<style>
+    .list-movie {
+        padding: 5px 5px 40px 5px;
+        margin: 5px;
+        height: 190px;
+        width: 110px;
+        background-color: #EEEEEE;
+        display: inline-block;
+    }
+
+    .comment-item {
+        margin: 0 0 12px 0;
+        padding-bottom: 10px;
+        border-bottom: 1px dashed #ddd;
+        overflow: hidden;
+    }
+
+        .comment-item .comment {
+            overflow: hidden;
+            word-wrap: break-word;
+        }
+
+        .comment-item .avatar {
+            float: left;
+            margin-right: 12px;
+            width: 48px;
+        }
+
+        .comment-item div {
+            background: 0;
+            font-size: 12px;
+            height: auto;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+
+    .col-sm-3 {
+        padding-left: 20px;
+    }
+
+    @@media(max-width:768px) {
+        .col-sm-3 {
+            padding-left: 0px;
+        }
+    }
+
+    .list-tab a {
+        padding: 10px 0px;
+        margin: 0px 15px;
+        color: #222222;
+        font-size: 15px;
+    }
+
+        .list-tab a:hover,
+        .list-tab a:focus,
+        .list-tab a:active {
+            font-weight: bold;
+            text-decoration: none;
+            border-bottom: 2px solid #007711;
+        }
+</style>
+
+<div class="panel panel-default" style="margin-top:167px;">
+    <div style="float:left; display:inline-block; margin-top:-167px; margin-left:25px; margin-right:25px; padding:3px; background-color:white; box-shadow:0px 0px 10px #999999;">
+        <img src="~/Content/Celeb/@Model.Avatar" class="img-responsive" title="@Model.Name" style="width:170px; height:240px;" />
+    </div>
+    <div>
+        <div class="font-larger" style="margin-top:10px; margin-bottom:10px;">
+            <strong>@Model.Name&nbsp;&nbsp;&nbsp;&nbsp;@Model.NameEn</strong>
+        </div>
+        <div style="margin-bottom:10px;">
+            @if (!Model.IsCollect)
+            {
+                <a class="btn btn-mark" title="收藏" href="/Mark/Create?target=@Model.Id&type=4&returnurl=@Request.Url"><span class="fa fa-star-o" aria-hidden="true"></span> 收藏</a>
+            }
+            else
+            {
+                <a class="btn btn-mark-inverse" title="取消收藏" href="/Mark/Cancel?target=@Model.Id&type=4&returnurl=@Request.Url"><span class="fa fa-star-o" aria-hidden="true"></span> 收藏</a>
+            }
+            @if (Model.IsCreate)
+            {
+                <a class="btn btn-mark tipup" href="/Celeb/Edit?id=@Model.Id" title="修改 @Model.Name" data-toggle="tooltip" data-placement="top"><i class="fa fa-edit" aria-hidden="true"></i></a>
+                if (!string.IsNullOrEmpty(Model.DoubanID))
+                {
+                    <a class="btn btn-mark tipup" href="/Celeb/Refresh?id=@Model.Id" title="更新 @Model.Name" data-toggle="tooltip" data-placement="top"><i class="fa fa-refresh" aria-hidden="true"></i></a>
+                }
+                <a class="btn btn-mark tipup" href="/Celeb/Delete?id=@Model.Id" title="删除 @Model.Name" data-toggle="tooltip" data-placement="top"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
+            }
+        </div>
+    </div>
+
+    <div class="panel-footer text-center no-padding" style="background-color:transparent; padding:10px;">
+        <div class="list-tab">
+            <a href="#details" id="link-to-details">&nbsp;&nbsp;详情&nbsp;&nbsp;</a>
+            <a href="#summary" id="link-to-summary">&nbsp;&nbsp;简介&nbsp;&nbsp;</a>
+            <a href="#works" id="link-to-works">&nbsp;&nbsp;作品&nbsp;&nbsp;</a>
+        </div>
+    </div>
+</div>
+
+
+<div class="no-padding">
+    @*详情*@
+    <div class="panel panel-default" id="details">
+        <div class="panel-heading text-center">
+            ————&nbsp;&nbsp;<strong>影人详情</strong>&nbsp;&nbsp;————
+        </div>
+        <div class="panel-body">
+            <ul style="list-style:none; padding:0px; margin:0px;">
+                <li>
+                    <span style="color:#808080;">性别:</span>
+                    @Html.DisplayFor(model => model.Gender)
+                </li>
+                @if (string.IsNullOrEmpty(Model.Deathday) || string.IsNullOrWhiteSpace(Model.Deathday))
+                {
+                    <li>
+                        <span style="color:#808080;">出生日期:</span>
+                        @Html.DisplayFor(model => model.Birthday)
+                    </li>
+                }
+                else
+                {
+                    <li>
+                        <span style="color:#808080;">生卒日期:</span>
+                        @Html.DisplayFor(model => model.Birthday) "至" @Html.DisplayFor(model => model.Deathday)
+                    </li>
+                }
+
+                <li>
+                    <span style="color:#808080;">出生地:</span>
+                    @Html.DisplayFor(model => model.BornPlace)
+                </li>
+
+                <li>
+                    <span style="color:#808080;">职业:</span>
+                    @Html.DisplayFor(model => model.Pro)
+                </li>
+
+                <li>
+                    <span style="color:#808080;">更多中文名:</span>
+                    @Html.DisplayFor(model => model.Aka)
+                </li>
+
+                <li>
+                    <span style="color:#808080;">更多外文名:</span>
+                    @Html.DisplayFor(model => model.AkaEn)
+                </li>
+
+                <li>
+                    <span style="color:#808080;">家庭成员:</span>
+                    @Html.DisplayFor(model => model.Family)
+                </li>
+
+                @if (!string.IsNullOrEmpty(Model.DoubanID) && !string.IsNullOrWhiteSpace(Model.DoubanID))
+                {
+                    <li>
+                        <span style="color:#808080;">豆瓣链接:</span>
+                        <a href="https://movie.douban.com/celebrity/@Model.DoubanID/" class="link-text" target="_self">@Model.DoubanID</a>
+                    </li>
+                }
+
+                @if (!string.IsNullOrEmpty(Model.IMDbID) && !string.IsNullOrWhiteSpace(Model.IMDbID))
+                {
+                    <li>
+                        <span style="color:#808080;">IMDb链接:</span>
+                        <a href="http://www.imdb.com/name/@Model.IMDbID/" class="link-text" target="_self">@Model.IMDbID</a>
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+
+    @*简介*@
+    <div class="panel panel-default" id="summary">
+        <div class="panel-heading text-center">
+            ————&nbsp;&nbsp;<strong>简介</strong>&nbsp;&nbsp;————
+        </div>
+        <div class="panel-body" id="divbody">
+            @if (!string.IsNullOrEmpty(Model.SummaryShort))
+            {
+                <div id="summarylong" style="display:none;">
+                    @foreach (var item in Model.SummaryPara)
+                    {
+                        <p>@item</p>
+                    }
+                    <a id="btnHidden" href="javascript: void(0);" class="link-text">(收起)</a>
+                </div>
+                <div id="summaryshort" style="display:block;">
+                    @Model.SummaryShort
+                    <a id="btnDisplay" href="javascript: void(0);" class="link-text">(展开全部)</a>
+                </div>
+            }
+        </div>
+    </div>
+
+    @*作品*@
+    <div class="panel panel-default no-border" id="works">
+        <div class="panel-heading text-center">
+            ————&nbsp;&nbsp;<strong>作品</strong>&nbsp;&nbsp;————
+        </div>
+        <div class="panel-body">
+            @if (Model.Works.Count == 0)
+            {
+                <div class="text-center">还没有收录过 @Model.Name 的作品(＃￣▽￣＃)</div>
+            }
+            @foreach (var item in Model.Works)
+            {
+                <div class="list-movie">
+                    <a class="full-height full-width" href="/Movie/Index?id=@item.Work.Id" rel="drevil" data-container="body" data-toggle="popover" data-placement="top" data-shadow="true"
+                       data-content="
+                <div><poptitle>@item.Work.Title</poptitle>&nbsp;&nbsp;<poprating>@item.Work.Rating</poprating>&nbsp;&nbsp;<span>@item.Work.Year</span></div>
+                <div>
+                <strong>导演:</strong>
+                @foreach (var celebitem in item.Work.Directors.Take(4))
+                {
+                    <span>@celebitem.Title</span>
+                }
+                </div>
+                <div>
+                <strong>主演:</strong>
+                @foreach (var celebitem in item.Work.Casts.Take(4))
+                {
+                    <span>@celebitem.Title</span>
+                }
+                </div>
+                <div><strong>类型:</strong><span>@item.Work.Genres</span></div>" >
+                <img src="~/Content/Movie/@item.Work.Avatar" title="@item.Work.Title" class="col-md-4 img-responsive full-height full-width no-padding" />
+                </a>
+                    <div class="text-center font-small">
+                        @item.Work.Title
+                        <br />
+                        @item.Pro
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
